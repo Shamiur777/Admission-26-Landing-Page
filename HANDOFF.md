@@ -12,7 +12,7 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - Playbook alignment is done for everything that applies to a static page: docs, headers, CSP guard test, validator, allowlist staging (`dist/`), live probe script, CI, and one audit loop (see the log).
 - The final URL path on the main domain is not confirmed.
 - All work is committed and pushed. 62 tests pass (`node --test`).
-- Unconfirmed: whether the REVENGE code gives the book discount on Rokomari. The page currently says it does.
+- Confirmed by the owner (2026-10-31): REVENGE gives the book discount on Rokomari.
 
 ## Decisions made
 
@@ -76,7 +76,7 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
   - A Bangla brand line and category tags.
   - A Bangla Rokomari button.
 - Rejected from the council: English digits for percentages (owner rule), and moving live links down (owner request).
-- Left for the owner: per-course Bangla descriptions, confirming REVENGE on Rokomari, and a real Android test in the Facebook browser.
+- Left for the owner: per-course Bangla descriptions, and a real Android test in the Facebook browser.
 
 ## Playbook section 16 checklist (static page)
 
