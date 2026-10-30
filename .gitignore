@@ -10,3 +10,5 @@ Links and Other info.txt
 .env*
 __pycache__/
 .claude/
+*.psb
+*.psd
