@@ -14,7 +14,7 @@ assets/fonts/           self-hosted font files (woff2)
 assets/js/config.js     coupon, offer end time, phone, tracking IDs, link allowlists
 assets/js/catalog.js    every course, book and category
 assets/js/tracking.js   Meta Pixel / GTM loader and click events
-assets/js/*.js          rendering, links, countdown, coupon copy, filters
+assets/js/*.js          rendering, links, countdown, coupon copy, shop tabs (tabs.js), chip filters
 assets/img/courses/     course banners: <id>-400.webp and <id>-800.webp
 assets/img/books/       book covers: <id>.webp, 260x372
 deploy/nginx.conf       nginx location blocks
@@ -22,6 +22,7 @@ deploy/nginx-security-headers.conf  shared headers, included by nginx.conf
 deploy/apache.htaccess  same headers for Apache / cPanel
 scripts/                make-image.py (course banners and book covers)
 _source/                original JPEGs, local only (git-ignored, do not upload)
+PRODUCT.md              design context for the page (not uploaded)
 .editorconfig .gitignore  editor and git settings
 ```
 
@@ -29,12 +30,22 @@ _source/                original JPEGs, local only (git-ignored, do not upload)
 
 | I want to... | Edit |
 | --- | --- |
-| Change the coupon code, discount percentages or offer end time | `assets/js/config.js` (`OFFER`). `endsAt` is ISO time with the +06:00 Bangladesh offset. |
+| Change the coupon code, discount percentages or offer end time | `assets/js/config.js` (`OFFER`). `endsAt` is ISO time with the +06:00 Bangladesh offset. `bookDiscountPercent` with `bookDiscountIsMax: true` prints "২০% পর্যন্ত" (up to 20%); set it to `false` for a flat rate. Every number on the page reads from here, so nothing else needs editing. The static fallback text in `index.html` (title, meta, OG tags) is typed by hand and must be changed too. `assets/img/og-cover.jpg` is a picture, so regenerate it if the numbers change. |
 | Change the phone number | `assets/js/config.js` (`CONTACT`) |
 | Add, remove, reorder or edit a course or book | `assets/js/catalog.js`, plus the banner image for a course or the cover image for a book (below) |
 | Change headlines, text, button labels | `index.html` |
 | Link to a new website | Add its host to `ALLOWED_LINK_HOSTS` in `config.js`, or the link will not render |
 | Pass UTM/fbclid to another host | Add it to `ATTRIBUTION_HOSTS` in `config.js` |
+
+### Page order and shop tabs
+
+The page runs top to bottom as: offer bar, hero, free live classes, shop, how to use the coupon, FAQ, footer. The shop has two ARIA tabs, courses and books, and one list shows at a time. Links to `#courses` and `#books` select the right tab and scroll to it (changing tab on the page also updates the hash, so a shared or reloaded URL opens the same tab), so an ad can point at `https://edgecoursebd.com/admission26/#books`. The hero's two path tiles and the sticky bottom bar use the same links.
+
+The two hero tiles each show a fan of three pictures. Which ones is set by `FEATURED` at the bottom of `catalog.js` (item ids; the middle one sits in front).
+
+Every outbound link opens in a new tab. This is set in one place, `setExternalLink()` in `assets/js/links.js`.
+
+When the offer ends (`OFFER.endsAt` passes), the page adds `offer-ended` to `<html>`. The countdown, ticket, coupon prices and book tags hide and the offer bar says the offer is over. To test it, set `endsAt` to a past date, look, then set it back.
 
 ### Course banner images
 

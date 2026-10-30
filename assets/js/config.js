@@ -6,7 +6,9 @@
 export const OFFER = {
   couponCode: 'REVENGE',
   courseDiscountPercent: 40,
-  bookDiscountPercent: 5,
+  bookDiscountPercent: 20,
+  // true: books read "২০% পর্যন্ত" (up to 20%). false: a flat 20%.
+  bookDiscountIsMax: true,
   // 72-hour campaign window, Bangladesh time (+06:00).
   // The countdown hides itself after this moment; the coupon text stays.
   endsAt: '2026-11-03T00:00:00+06:00',

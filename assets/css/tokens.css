@@ -1,31 +1,40 @@
-/* Hallmark · custom · theme edge-paper · genre editorial · Anek Bangla + Hind Siliguri · signature the coupon as a tear-off ticket */
-/* Hallmark · critique · the old page was dark gradients; this one is warm paper with one orange accent, and the course posters carry the colour */
+/* Hallmark · custom · theme exam-notice-board · genre editorial · Anek Bangla + Hind Siliguri · signature the coupon as a perforated tear-off slip, courses and books as two equal paths · hero: custom, headline left and two path tiles with the coupon slip right on a flat orange field · nav: none, a sticky offer bar and a brand strip · footer: ink band, brand name over phone and site link */
+/* Hallmark · critique · the first build was a cream page with an orange accent, which is the default every generated page lands on; this one gives each chapter its own flat colour field */
 /* Hallmark · waive 26b · no form control and no aria-disabled in index.html · the page has only buttons and links, so a disabled state would never show */
+/* Hallmark · waive 83 · the shop is a catalogue of the owner's own course posters and book covers · the pictures are the products on sale, so each one must show */
+/* Hallmark · waive 44c · stamp declares a custom hero with the path tiles and slip as its visual · the large atom vector behind the hero is decoration, so the measured visual is the wrong element */
+/* Hallmark · answered F25 · the course poster image already prints the same highlight lines, so the phone row drops the duplicate text list */
+/* Hallmark · dismissed F4 · the orange button recipe is one style reused on course cards, book cards and the sticky bar, and the ink button appears only in the no-script fallback */
+/* Hallmark · dismissed 58 · the screen at that depth is the FAQ, four short answers a visitor opens one at a time */
 /* Design tokens only. Change colours, type and spacing here. */
 
 :root {
-  /* colour: paper and ink */
-  --color-paper: #FBF7F0;
-  --color-sand: #F2EADB;
-  --color-surface: #FFFDF9;
-  --color-ink: #1C1712;
-  --color-ink-soft: #52483D;
-  --color-line: #E4D8C5;
-  --color-on-ink: #FBF7F0;
-  --color-on-ink-soft: #CFC4B2;
-  --color-ink-2: #2B241C;
-  --color-accent-bright: #FF8A3D;
-
-  /* colour: brand accents (white text on both passes AA) */
-  --color-accent: #C2410C;
-  --color-accent-strong: #9A3412;
-  --color-accent-soft: #FCE4D2;
+  /* chapter colours: each page section owns one flat field */
+  --color-orange: #F26B1D;
+  --color-orange-bright: #FF7A2E;
+  --color-orange-deep: #B4380A;
+  --color-orange-soft: #FFE3D0;
   --color-green: #1C7A3E;
-  --color-green-ink: #14532D;
-  --color-green-soft: #DDEFE0;
-  --color-focus: #1C1712;
-  --color-shadow: rgba(28, 23, 18, 0.18);
-  --color-accent-ink: #FFFDF8;
+  --color-green-deep: #14532D;
+  --color-green-soft: #DCEFE1;
+  --color-ink: #12130F;
+  --color-ink-2: #23251F;
+  --color-ink-soft: #4A4D45;
+  --color-paper: #F6F8F4;
+  --color-paper-2: #E9EEE6;
+  --color-slip: #FFFFFD;
+  --color-line: #D5DBD0;
+  --color-on-ink: #F6F8F4;
+  --color-on-ink-soft: #C7CCC1;
+  --color-on-green: #F6F8F4;
+  --color-focus: #12130F;
+  --color-shadow: rgba(18, 19, 15, 0.2);
+
+  /* background vectors: low contrast, one tone per chapter */
+  --color-deco-orange: rgba(18, 19, 15, 0.16);
+  --color-deco-green: rgba(246, 248, 244, 0.22);
+  --color-deco-paper: rgba(18, 19, 15, 0.09);
+  --color-deco-ink: rgba(246, 248, 244, 0.14);
 
   /* type */
   --font-display: 'Anek Bangla', 'Hind Siliguri', 'Noto Sans Bengali', system-ui, sans-serif;
@@ -35,9 +44,9 @@
   --text-base: 1rem;
   --text-m: 1.125rem;
   --text-l: clamp(1.375rem, 5.2vw, 1.75rem);
-  --text-xl: clamp(1.75rem, 6.4vw, 2.5rem);
-  --text-hero: clamp(2.125rem, 9.4vw, 4.25rem);
-  --leading-tight: 1.3;
+  --text-xl: clamp(1.875rem, 7.4vw, 2.75rem);
+  --text-hero: clamp(2.375rem, 11.4vw, 5rem);
+  --leading-tight: 1.25;
   --leading-body: 1.6;
 
   /* space (4px base) */
@@ -55,10 +64,11 @@
   --container: 70rem;
   --gutter: 1rem;
   --offer-bar-h: 3.25rem;
-  --chips-bar-h: 4rem;
+  --shop-bar-h: 4.25rem;
   --tap: 2.75rem;
+  --edge-h: 1.25rem;
 
-  /* shape */
+  /* shape: one radius for slips and cards, pills for small controls */
   --radius-s: 0.5rem;
   --radius-m: 0.875rem;
   --radius-pill: 62rem;
@@ -70,4 +80,8 @@
 
 @media (min-width: 600px) {
   :root { --gutter: 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur: 0.01ms; }
 }

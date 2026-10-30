@@ -141,7 +141,7 @@ export const COURSES = [
     category: 'nursing',
     url: 'https://edgecoursebd.com/courses/592',
     price: 4999,
-    highlights: ['150+ ঘণ্টা ক্লাস', '100+ Nursing Test Exam', 'Personal Mentorship'],
+    highlights: ['১৫০+ ঘণ্টা ক্লাস', '100+ Nursing Test Exam', 'Personal Mentorship'],
   },
   {
     id: 'nursing-diploma',
@@ -157,7 +157,7 @@ export const COURSES = [
     category: 'nursing',
     url: 'https://edgecoursebd.com/courses/589',
     price: 999,
-    highlights: ['40 ঘণ্টা QB Class', '2500 পেজ স্লাইড ফ্রি', '20 সেট Exam'],
+    highlights: ['৪০ ঘণ্টা QB Class', '২৫০০ পেজের স্লাইড ফ্রি', '২০ সেট Exam'],
   },
   {
     id: 'all-private-university',
@@ -224,7 +224,6 @@ export const BOOK_CATEGORIES = [
 ];
 
 export const BOOKS = [
-  { id: 'architecture-analysis', title: 'QNA Architecture Analysis Megabook', category: 'analysis', url: 'https://www.rokomari.com/book/571712' },
   { id: 'ju-ad-analysis', title: 'QNA JU A+D Unit Analysis Megabook', category: 'analysis', url: 'https://www.rokomari.com/book/571704' },
   { id: 'ru-c-analysis', title: 'QNA RU C Unit Analysis Megabook', category: 'analysis', url: 'https://www.rokomari.com/book/571706' },
   { id: 'cu-a-analysis', title: 'QNA CU A Unit Analysis Megabook', category: 'analysis', url: 'https://www.rokomari.com/book/571708' },
@@ -242,6 +241,7 @@ export const BOOKS = [
   { id: 'varsity-a-written', title: 'QNA Varsity ক ইউনিট Written Megabook', category: 'written', url: 'https://www.rokomari.com/book/570540/qna-varsity-a-unit-written-megabook' },
   { id: 'varsity-b-written', title: 'QNA Varsity খ ইউনিট Written Megabook', category: 'written', url: 'https://www.rokomari.com/book/570543/qna-varsity-b-unit-written-megabook' },
   { id: 'varsity-c-written', title: 'QNA Varsity গ ইউনিট Written Megabook', category: 'written', url: 'https://www.rokomari.com/book/570542/qna-varsity-c-unit-written-megabook' },
+  { id: 'architecture-analysis', title: 'QNA Architecture Analysis Megabook', category: 'analysis', url: 'https://www.rokomari.com/book/571712' },
 ];
 
 /** Where the free live sessions are streamed. */
@@ -254,3 +254,12 @@ export const LIVE_CHANNELS = [
   { id: 'hulkenstein-hum-bs', name: 'HulkenStein Humanities & Business Studies', kind: 'YouTube Channel', url: 'https://www.youtube.com/@hulkenstein_artscommerce' },
   { id: 'hulkenstein-26-group', name: 'Hulkenstein 26', kind: 'Facebook Group', url: 'https://www.facebook.com/groups/1108219213600139' },
 ];
+
+/**
+ * The three items pictured in the hero's two path tiles (ids from COURSES and BOOKS).
+ * The middle one sits in front. Pick visually different, portrait-friendly covers.
+ */
+export const FEATURED = {
+  courses: ['du-a-unit-written', 'sust-crash', 'mist-sprint'],
+  books: ['ru-c-analysis', 'ju-ad-analysis', 'cu-a-analysis'],
+};

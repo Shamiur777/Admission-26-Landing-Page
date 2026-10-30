@@ -3,13 +3,12 @@ import { toBanglaDigits } from './format.js';
 /**
  * Wires a group of category chips to a list of items carrying data-category.
  * Chips need data-filter ("all" or a category id); the active chip gets aria-pressed="true".
- * After a tap, a list that has scrolled above the sticky chip bar is brought back into view.
- * @param {{ chips: HTMLElement, items: HTMLElement, status: HTMLElement|null, noun: string }} options
+ * After a tap, a list that has scrolled above the sticky tab bar is brought back into view.
+ * @param {{ chips: HTMLElement, items: HTMLElement, bar: HTMLElement|null, status: HTMLElement|null, noun: string }} options
  */
-export function initFilters({ chips, items, status, noun }) {
+export function initFilters({ chips, items, bar, status, noun }) {
   const buttons = Array.from(chips.querySelectorAll('[data-filter]'));
   const cards = Array.from(items.children);
-  const bar = chips.closest('.chips-bar');
 
   function apply(category) {
     let shown = 0;
@@ -26,7 +25,7 @@ export function initFilters({ chips, items, status, noun }) {
     const stackBottom = bar ? bar.getBoundingClientRect().bottom : 0;
     if (items.getBoundingClientRect().top >= stackBottom) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    items.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' });
+    items.scrollIntoView({ block: 'start', behavior: reduced ? 'instant' : 'smooth' });
   }
 
   chips.addEventListener('click', (event) => {

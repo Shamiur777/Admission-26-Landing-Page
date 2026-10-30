@@ -1,22 +1,23 @@
 import { CONTACT, OFFER } from './config.js';
 import { COURSES, BOOKS } from './catalog.js';
-import { discounted, formatTaka, toBanglaDigits } from './format.js';
+import { bookDiscountText, discounted, formatTaka, percentText, toBanglaDigits } from './format.js';
 
 /**
  * Fills [data-bind] elements in the static HTML from config.js / catalog.js,
- * so numbers are written once. The HTML keeps sensible defaults for no-JS.
+ * so every number is written once. The HTML keeps defaults for when script is off.
  */
 export function bindStaticText() {
   const lowestCoursePrice = Math.min(...COURSES.map((c) => discounted(c.price, OFFER.courseDiscountPercent)));
   const values = {
     coupon: OFFER.couponCode,
-    'course-percent': toBanglaDigits(OFFER.courseDiscountPercent) + '%',
-    'book-percent': toBanglaDigits(OFFER.bookDiscountPercent) + '%',
+    'course-percent': percentText(OFFER.courseDiscountPercent),
+    'book-percent': percentText(OFFER.bookDiscountPercent),
+    'book-max': OFFER.bookDiscountIsMax ? 'পর্যন্ত' : '',
+    'book-discount': bookDiscountText(OFFER),
     'course-count': toBanglaDigits(COURSES.length),
     'book-count': toBanglaDigits(BOOKS.length),
     'lowest-price': formatTaka(lowestCoursePrice),
     phone: CONTACT.phone,
-    'phone-bn': toBanglaDigits(CONTACT.phone),
   };
 
   document.querySelectorAll('[data-bind]').forEach((el) => {

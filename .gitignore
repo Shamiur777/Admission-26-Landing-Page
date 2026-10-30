@@ -12,3 +12,6 @@ __pycache__/
 .claude/
 *.psb
 *.psd
+.hallmark/
+.impeccable/
+.taste-skill/

@@ -37,3 +37,22 @@ export function discounted(price, percent) {
 export function padBangla(n) {
   return toBanglaDigits(String(n).padStart(2, '0'));
 }
+
+/**
+ * "৪০%" for a percentage.
+ * @param {number} percent
+ * @returns {string}
+ */
+export function percentText(percent) {
+  return toBanglaDigits(percent) + '%';
+}
+
+/**
+ * Book discount as shown in running text: "২০% পর্যন্ত" when the offer is a maximum, else "২০%".
+ * @param {{bookDiscountPercent: number, bookDiscountIsMax?: boolean}} offer
+ * @returns {string}
+ */
+export function bookDiscountText(offer) {
+  const base = percentText(offer.bookDiscountPercent);
+  return offer.bookDiscountIsMax ? base + ' পর্যন্ত' : base;
+}

@@ -29,3 +29,15 @@ export function buildLink(rawUrl, search = window.location.search) {
   }
   return url.toString();
 }
+
+/**
+ * Points a link at a vetted URL and opens it in a new tab.
+ * Every outbound link rendered by the page goes through this one function.
+ * @param {Element} link
+ * @param {string} href result of buildLink()
+ */
+export function setExternalLink(link, href) {
+  link.setAttribute('href', href);
+  link.setAttribute('target', '_blank');
+  link.setAttribute('rel', 'noopener noreferrer');
+}

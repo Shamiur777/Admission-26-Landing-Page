@@ -34,6 +34,8 @@ h1, h2, h3 {
   text-wrap: balance;
 }
 
+b, strong { font-family: var(--font-display); font-weight: 800; }
+
 a { color: inherit; }
 
 :focus-visible {
@@ -42,7 +44,10 @@ a { color: inherit; }
   border-radius: var(--radius-s);
 }
 
+::selection { background: var(--color-orange); color: var(--color-ink); }
+
 .container {
+  position: relative;
   width: 100%;
   max-width: var(--container);
   margin-inline: auto;
@@ -79,10 +84,4 @@ a { color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-  }
 }
-
-::selection { background: var(--color-accent); color: var(--color-accent-ink); }
