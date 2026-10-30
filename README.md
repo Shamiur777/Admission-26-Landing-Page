@@ -60,7 +60,7 @@ Colours are CSS custom properties in `assets/css/tokens.css`: near-black ink, wa
 
 ### Page order and shop tabs
 
-The page runs top to bottom as: offer bar, hero, free guideline links, shop, how to use the coupon, FAQ, footer. The shop has two ARIA tabs, courses and books, and one list shows at a time. Links to `#courses` and `#books` select the right tab and scroll to it (changing tab on the page also updates the hash, so a shared or reloaded URL opens the same tab), so an ad can point at `https://edgecoursebd.com/admission26/#books`. The hero's two path tiles and the sticky bottom bar use the same links.
+The page runs top to bottom as: offer bar, hero, free guideline lives, shop, how to use the coupon, FAQ, footer. The shop has two ARIA tabs, courses and books, and one list shows at a time. Links to `#courses` and `#books` select the right tab and scroll to it (changing tab on the page also updates the hash, so a shared or reloaded URL opens the same tab), so an ad can point at `https://edgecoursebd.com/admission26/#books`. The hero's two path tiles and the sticky bottom bar use the same links.
 
 The two hero tiles each show a fan of three pictures. Which ones is set by `FEATURED` at the bottom of `catalog.js` (item ids; the middle one sits in front). The same fans appear on the hand-off card at the end of each list ("এবার QNA-র বইগুলো দেখো" after the courses, "কোর্সগুলো দেখো" after the books). Those cards are plain links to `#books` and `#courses`, so they use the same tab switching as every other link. The two tabs are saffron buttons with an icon; the open one turns ink with a saffron underline.
 

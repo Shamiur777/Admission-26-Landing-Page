@@ -36,7 +36,7 @@ The owner chose ink and saffron as the page palette and rejected the orange and 
 
 ## Evidence on Hand
 
-Course posters (24), real QNA book covers (18), course prices, mentor institutions from the posters, seven free guideline channels, owner proof lines for books.
+Course posters (24), real QNA book covers (18), course prices, mentor institutions from the posters, seven free guideline live channels, owner proof lines for books.
 
 ## Product Principles
 
