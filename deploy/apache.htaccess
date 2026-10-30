@@ -48,7 +48,8 @@ DirectoryIndex index.html
 <FilesMatch "^(\.|README|_headers|.*\.(py|log|md|txt|crdownload|part)$)">
   Require all denied
 </FilesMatch>
+# Allowlist, same as nginx: only index.html and assets/ are public. Upload dist/ only.
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteRule ^(_source|deploy|scripts)(/|$) - [F,L]
+  RewriteRule !^(index\.html|assets/.+)?$ - [F,L]
 </IfModule>

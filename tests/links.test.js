@@ -57,20 +57,22 @@ test('existing params on the link are kept, not overwritten', () => {
   assert.equal(u.searchParams.get('utm_source'), 'own');
 });
 
-test('malicious param values are encoded', () => {
+test('malicious param values are dropped, not forwarded', () => {
   const evil = '"><script>alert(1)</script>&x=y#z';
   const href = ok('https://edgecoursebd.com/c', '?utm_source=' + encodeURIComponent(evil));
   assert.ok(!href.includes('<'));
   assert.ok(!href.includes('"'));
   const u = new URL(href);
-  assert.equal(u.searchParams.get('utm_source'), evil);
+  assert.equal(u.searchParams.has('utm_source'), false);
   assert.equal(u.searchParams.has('x'), false);
   assert.equal(u.host, 'edgecoursebd.com');
 });
 
-test('param values are capped at 200 characters', () => {
+test('param values over 200 characters are dropped', () => {
   const u = new URL(ok('https://edgecoursebd.com/c', '?utm_campaign=' + 'a'.repeat(500)));
-  assert.equal(u.searchParams.get('utm_campaign').length, 200);
+  assert.equal(u.searchParams.has('utm_campaign'), false);
+  const v = new URL(ok('https://edgecoursebd.com/c', '?utm_campaign=' + 'a'.repeat(200)));
+  assert.equal(v.searchParams.get('utm_campaign').length, 200);
 });
 
 test('missing or empty search is fine', () => {

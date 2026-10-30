@@ -33,7 +33,7 @@ export function bindOffer(now) {
 
   document.querySelectorAll('[data-bind]').forEach((el) => {
     const key = el.dataset.bind;
-    if (key in texts) el.textContent = texts[key];
+    if (Object.hasOwn(texts, key)) el.textContent = texts[key];
     if (key.startsWith('phone')) {
       const link = el.tagName === 'A' ? el : el.closest('a');
       if (link) link.setAttribute('href', CONTACT.phoneHref);
@@ -42,6 +42,6 @@ export function bindOffer(now) {
 
   document.querySelectorAll('[data-bind-label]').forEach((el) => {
     const key = el.dataset.bindLabel;
-    if (key in ariaLabels) el.setAttribute('aria-label', ariaLabels[key]);
+    if (Object.hasOwn(ariaLabels, key)) el.setAttribute('aria-label', ariaLabels[key]);
   });
 }

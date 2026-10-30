@@ -45,13 +45,34 @@ function couponPrice(price, percent) {
   return Math.round(price * (1 - percent / 100));
 }
 
+/** An offset is required: without one, Date.parse uses the visitor's own timezone. */
+const EXPLICIT_OFFSET = /(Z|[+-]\d\d:\d\d)$/;
+
+/**
+ * @param {number} percent
+ * @returns {boolean}
+ */
+function isPercent(percent) {
+  return Number.isFinite(percent) && percent >= 0 && percent <= 100;
+}
+
+/**
+ * @param {OfferConfig} offerConfig
+ * @returns {boolean}
+ */
+function isWellFormed({ endsAt, courses, books }) {
+  return typeof endsAt === 'string' && EXPLICIT_OFFSET.test(endsAt)
+    && isPercent(courses?.percent) && isPercent(books?.percent);
+}
+
 /**
  * Describes the offer at a moment in time.
  *
  * Interface notes:
  * - Pure. `now` is epoch milliseconds, supplied by the caller (Date.now() in the page).
  * - `status` is 'running' while now is before `endsAt`, and 'ended' at `endsAt` and after.
- * - An `endsAt` that does not parse counts as 'ended', so a typo can never show a discount.
+ * - A malformed offer counts as 'ended', so a typo can never show a wrong discount: an `endsAt`
+ *   that does not parse or has no explicit offset (+06:00 or Z), or a percent outside 0–100.
  * - `timeLeft` is all zeros once ended.
  * - Text for the page lives in `labels`; the "offer ended" copy stays in index.html.
  *
@@ -70,7 +91,7 @@ export function getOffer(offerConfig, now) {
   const { couponCode, endsAt, courses, books } = offerConfig;
   const end = Date.parse(endsAt);
   const msLeft = end - now;
-  const running = !Number.isNaN(end) && msLeft > 0;
+  const running = isWellFormed(offerConfig) && !Number.isNaN(end) && msLeft > 0;
 
   const coursePrice = (price) => ({ regular: price, coupon: couponPrice(price, courses.percent) });
   const bookPercent = percentLabel(books.percent);

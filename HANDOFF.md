@@ -9,9 +9,9 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - Page is built, redesigned and tested (`node --test`).
 - The offer runs until 2026-11-03 19:00 +06:00.
 - Meta Pixel ID and GTM ID are not set yet. Tracking is off until the owner supplies them.
-- Playbook alignment is in progress: threat model, edge checklist and release checklist are written. Validator, stage script, probe script, CI and header changes are being done by other workstreams and are not recorded as done here.
+- Playbook alignment is done for everything that applies to a static page: docs, headers, CSP guard test, validator, allowlist staging (`dist/`), live probe script, CI, and one audit loop (see the log).
 - The final URL path on the main domain is not confirmed.
-- Working tree has uncommitted changes (see the log).
+- All work is committed and pushed. 57 tests pass (`node --test`).
 
 ## Decisions made
 
@@ -60,8 +60,8 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - `4231ea2` Redesign: live links at the top, courses and books as equal paths.
 - `9412a4f` Original covers for the GST, HSTU, IUT and Agriculture books.
 - `3a0a873` Offer and Shop modules deepened, tests and GLOSSARY.md added.
-- Uncommitted at the time of writing: Cards module, tests for links, cards and tracking, tracking changes, README and index.html edits, and these docs.
-- Playbook alignment, in progress. Done: `CLAUDE.md`, this file, `docs/THREAT-MODEL.md`, `docs/SECURITY-EDGE.md`, `docs/RELEASE-CHECKLIST.md`. Not verified live: headers, probes, Pixel Helper test.
+- Playbook alignment (commit 964e673): `CLAUDE.md`, this file, `docs/THREAT-MODEL.md`, `docs/SECURITY-EDGE.md`, `docs/RELEASE-CHECKLIST.md`; CORP, X-Permitted-Cross-Domain-Policies, `base-uri 'none'`, Pages ACAO stripped, preview noindex; `tests/headers.test.js`; `scripts/validate.mjs`, `scripts/stage.mjs`, `scripts/probe.mjs`; `.github/workflows/ci.yml` (actions pinned to SHAs, checked against tags). Footer links to the main site's privacy, terms and refund pages.
+- Audit loop (playbook 14.6): sharp-edges, fp-check, differential review, secrets and Actions review by a read-only agent. 9 candidates, 2 confirmed (both Low), 7 false positive or informational. Fixed with regression tests in `tests/audit-fixes-2026-10-31.test.js`: F1 ad params forwarded only if plain characters and at most 200; F2 Apache now allowlists `index.html` and `assets/` like nginx. Sharp edges fixed too: a deadline without an offset or a percent outside 0-100 counts as ended; `bind.js` uses own-property lookups. Not done: semgrep (binary not installed), owasp-top-10-testing (live exploit agents, not authorised), live probes on edgecoursebd.com (production; the developer runs `node scripts/probe.mjs` after deploying).
 
 ## Playbook section 16 checklist (static page)
 
@@ -103,8 +103,8 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - N/A Leaked credentials detection, `/api/*` cache, Turnstile hostnames: no login, API or forms.
 
 ### Static site
-- [ ] Allowlist deploy from a temp folder (`scripts/stage.mjs`, being written)
-- [ ] Validator (`scripts/validate.mjs`, being written)
+- [x] Allowlist deploy from a temp folder (`scripts/stage.mjs` builds `dist/`)
+- [x] Validator (`scripts/validate.mjs`, also run in CI)
 - [ ] Hashed `?v=` on CSS and JS (not done; files cache for 5 minutes instead)
 - [x] No `_redirects` file; no inline scripts; works with scripting off for the main links (verify before release)
 - N/A Turnstile and forms: no forms.
@@ -121,11 +121,11 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 
 ### Testing
 - [x] Tests for links, tracking, cards, offer, shop and meta text (`tests/`)
-- [ ] Live probe list run after deploy and recorded (`scripts/probe.mjs`, being written)
+- [ ] Live probe list run after deploy and recorded (`scripts/probe.mjs` exists; run it on the real URL after deploy)
 - [ ] Meta Pixel Helper test (after IDs are set)
 - N/A Route tests per role, Playwright persona suite: no roles or routes.
 
 ### Practice
 - [x] Agents briefed with the safety rules (`CLAUDE.md`)
 - [x] No secret file opened or printed
-- [ ] Commits after each milestone (current work is uncommitted)
+- [x] Commits after each milestone
