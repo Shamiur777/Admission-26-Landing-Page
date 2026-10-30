@@ -96,6 +96,7 @@ export function courseCard(course, ctx) {
   part(card, 'regular-price').textContent = formatTaka(price.regular);
   part(card, 'coupon-price').textContent = formatTaka(price.coupon);
   part(card, 'coupon-code').textContent = ctx.offer.couponCode;
+  part(card, 'percent').textContent = `${ctx.offer.labels.coursePercent} ছাড়`;
 
   setLink(card, ctx.href, 'courseClick',
     { id: course.id, name: course.title, category: course.category },
@@ -124,7 +125,7 @@ export function bookCard(book, ctx) {
 
   setLink(card, ctx.href, 'bookClick',
     { id: book.id, name: book.title, category: book.category },
-    `${book.title}, Rokomari-তে অর্ডার করো`);
+    `${book.title}, রকমারিতে অর্ডার করো`);
   return card;
 }
 

@@ -27,14 +27,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
 h1, h2, h3 {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 700;
   line-height: var(--leading-tight);
   overflow-wrap: break-word;
   min-width: 0;
   text-wrap: balance;
 }
 
-b, strong { font-family: var(--font-display); font-weight: 800; }
+b, strong { font-weight: 700; }
 
 a { color: inherit; }
 
@@ -44,7 +44,7 @@ a { color: inherit; }
   border-radius: var(--radius-s);
 }
 
-::selection { background: var(--color-orange); color: var(--color-ink); }
+::selection { background: var(--color-saffron); color: var(--color-ink); }
 
 .container {
   position: relative;

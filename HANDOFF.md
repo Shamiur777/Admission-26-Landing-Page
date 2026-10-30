@@ -11,7 +11,8 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - Meta Pixel ID and GTM ID are not set yet. Tracking is off until the owner supplies them.
 - Playbook alignment is done for everything that applies to a static page: docs, headers, CSP guard test, validator, allowlist staging (`dist/`), live probe script, CI, and one audit loop (see the log).
 - The final URL path on the main domain is not confirmed.
-- All work is committed and pushed. 57 tests pass (`node --test`).
+- All work is committed and pushed. 62 tests pass (`node --test`).
+- Unconfirmed: whether the REVENGE code gives the book discount on Rokomari. The page currently says it does.
 
 ## Decisions made
 
@@ -62,6 +63,20 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - `3a0a873` Offer and Shop modules deepened, tests and GLOSSARY.md added.
 - Playbook alignment (commit 964e673): `CLAUDE.md`, this file, `docs/THREAT-MODEL.md`, `docs/SECURITY-EDGE.md`, `docs/RELEASE-CHECKLIST.md`; CORP, X-Permitted-Cross-Domain-Policies, `base-uri 'none'`, Pages ACAO stripped, preview noindex; `tests/headers.test.js`; `scripts/validate.mjs`, `scripts/stage.mjs`, `scripts/probe.mjs`; `.github/workflows/ci.yml` (actions pinned to SHAs, checked against tags). Footer links to the main site's privacy, terms and refund pages.
 - Audit loop (playbook 14.6): sharp-edges, fp-check, differential review, secrets and Actions review by a read-only agent. 9 candidates, 2 confirmed (both Low), 7 false positive or informational. Fixed with regression tests in `tests/audit-fixes-2026-10-31.test.js`: F1 ad params forwarded only if plain characters and at most 200; F2 Apache now allowlists `index.html` and `assets/` like nginx. Sharp edges fixed too: a deadline without an offset or a percent outside 0-100 counts as ended; `bind.js` uses own-property lookups. Not done: semgrep (binary not installed), owasp-top-10-testing (live exploit agents, not authorised), live probes on edgecoursebd.com (production; the developer runs `node scripts/probe.mjs` after deploying).
+- Round 5: Kona ("QNA Font") is the only font, with a footer credit and OFL file. Ink + saffron palette replaces orange and green. Tabs are coloured buttons, and hand-off cards sit at the end of each list.
+- LLM Council (`llm-council` skill): 5 Sonnet/Haiku advisors as Bangladeshi visitors, anonymous peer review, chairman verdict. Round 6 fixes from it:
+  - A primary "কোর্স আর বই দেখো" hero button.
+  - The open tab is saffron and the closed tab is a raised white button.
+  - In-list prompts that cross between courses and books.
+  - The "কুপনসহ" price with a ৪০% tag and a checkout hint.
+  - Copy success and failure messages.
+  - Wrapping chips.
+  - A deadline in words (`labels.deadline`, tested).
+  - At most two pinned bars.
+  - A Bangla brand line and category tags.
+  - A Bangla Rokomari button.
+- Rejected from the council: English digits for percentages (owner rule), and moving live links down (owner request).
+- Left for the owner: per-course Bangla descriptions, confirming REVENGE on Rokomari, and a real Android test in the Facebook browser.
 
 ## Playbook section 16 checklist (static page)
 

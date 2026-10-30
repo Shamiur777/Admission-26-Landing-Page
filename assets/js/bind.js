@@ -19,6 +19,7 @@ export function bindOffer(now) {
     'book-percent': labels.bookPercentFigure,
     'book-max': labels.bookUpTo,
     'book-discount': labels.bookPercent,
+    deadline: labels.deadline,
     'course-count': toBanglaDigits(COURSES.length),
     'book-count': toBanglaDigits(BOOKS.length),
     'lowest-price': formatTaka(offer.lowestCoursePrice(COURSES)),

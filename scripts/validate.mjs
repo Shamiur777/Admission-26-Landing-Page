@@ -5,6 +5,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 export const ALLOWED_EXT = new Set(['.css', '.js', '.woff2', '.webp', '.jpg', '.png', '.svg', '.ico']);
+// Single files allowed whatever their extension: the font licence must ship next to the font.
+export const ALLOWED_FILES = new Set(['assets/fonts/Kona-OFL.txt']);
 
 const SKIP_REF = /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i;
 
@@ -132,7 +134,7 @@ export async function validate(root = ROOT) {
       const base = f.split(sep).pop();
       if (lstatSync(f).isSymbolicLink()) err(`symlink inside assets/: ${rel}`);
       if (base.startsWith('.')) err(`dotfile inside assets/: ${rel}`);
-      else if (!ALLOWED_EXT.has(extname(base).toLowerCase())) err(`file type not allowed inside assets/: ${rel}`);
+      else if (!ALLOWED_EXT.has(extname(base).toLowerCase()) && !ALLOWED_FILES.has(rel)) err(`file type not allowed inside assets/: ${rel}`);
     }
   } else err('assets/ folder is missing');
 

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { getOffer } from '../assets/js/offer.js';
+import { getOffer, deadlineLabel } from '../assets/js/offer.js';
 import { OFFER } from '../assets/js/config.js';
 import { COURSES } from '../assets/js/catalog.js';
 
@@ -87,4 +87,35 @@ test('the real OFFER config produces the expected page text', () => {
   const { labels } = getOffer(OFFER, END - 1);
   assert.equal(labels.coursePercent, '৪০%');
   assert.equal(labels.bookPercent, '২০% পর্যন্ত');
+});
+
+test('deadline label for the current config reads in Bangla words, Dhaka time', () => {
+  assert.equal(getOffer(config, END - 1).labels.deadline, deadlineLabel(OFFER.endsAt));
+  assert.equal(deadlineLabel('2026-11-03T19:00:00+06:00'), '৩ নভেম্বর, সন্ধ্যা ৭টা');
+});
+
+test('deadline label: midnight is রাত ১২টা, minutes only when not zero', () => {
+  assert.equal(deadlineLabel('2026-11-03T00:30:00+06:00'), '৩ নভেম্বর, রাত ১২টা ৩০ মিনিট');
+  assert.equal(deadlineLabel('2026-11-03T00:00:00+06:00'), '৩ নভেম্বর, রাত ১২টা');
+});
+
+test('deadline label: a Z-suffixed time is converted to Dhaka time', () => {
+  assert.equal(deadlineLabel('2026-11-03T13:00:00Z'), '৩ নভেম্বর, সন্ধ্যা ৭টা');
+  assert.equal(deadlineLabel('2026-12-31T20:00:00Z'), '১ জানুয়ারি, রাত ২টা');
+});
+
+test('deadline label: day periods change at 4, 6, 12, 15, 18 and 20 o\'clock', () => {
+  const at = (h) => deadlineLabel(`2026-11-03T${String(h).padStart(2, '0')}:00:00+06:00`).split(', ')[1];
+  assert.equal(at(3), 'রাত ৩টা');
+  assert.equal(at(4), 'ভোর ৪টা');
+  assert.equal(at(6), 'সকাল ৬টা');
+  assert.equal(at(12), 'দুপুর ১২টা');
+  assert.equal(at(15), 'বিকেল ৩টা');
+  assert.equal(at(18), 'সন্ধ্যা ৬টা');
+  assert.equal(at(20), 'রাত ৮টা');
+});
+
+test('deadline label is empty for an unreadable date', () => {
+  assert.equal(deadlineLabel('soon'), '');
+  assert.equal(getOffer({ ...config, endsAt: 'soon' }, 0).labels.deadline, '');
 });

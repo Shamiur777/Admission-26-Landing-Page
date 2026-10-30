@@ -1,53 +1,47 @@
-/* Hallmark · custom · theme exam-notice-board · genre editorial · Anek Bangla + Hind Siliguri · signature the coupon as a perforated tear-off slip, courses and books as two equal paths · hero: custom, headline left and two path tiles with the coupon slip right on a flat orange field · nav: none, a sticky offer bar and a brand strip · footer: ink band, brand name over phone and site link */
-/* Hallmark · critique · the first build was a cream page with an orange accent, which is the default every generated page lands on; this one gives each chapter its own flat colour field */
+/* Hallmark · custom · theme ink-and-saffron · genre editorial · Kona (QNA Font) one family · signature the coupon as a perforated saffron slip, courses and books as two equal paths · hero: custom, headline left and two path tiles with the coupon slip right on a flat ink field · nav: none, a sticky offer bar and a brand strip · footer: ink band, brand name over phone and site link */
+/* Hallmark · critique · the orange and green pairing read as a clash on a phone; this build keeps one accent, saffron, on near-black and warm paper, so the coupon and the tabs are the only bright things */
 /* Hallmark · waive 26b · no form control and no aria-disabled in index.html · the page has only buttons and links, so a disabled state would never show */
 /* Hallmark · waive 83 · the shop is a catalogue of the owner's own course posters and book covers · the pictures are the products on sale, so each one must show */
 /* Hallmark · waive 44c · stamp declares a custom hero with the path tiles and slip as its visual · the large atom vector behind the hero is decoration, so the measured visual is the wrong element */
 /* Hallmark · answered F25 · the course poster image already prints the same highlight lines, so the phone row drops the duplicate text list */
-/* Hallmark · dismissed F4 · the orange button recipe is one style reused on course cards, book cards and the sticky bar, and the ink button appears only in the no-script fallback */
+/* Hallmark · dismissed F4 · the saffron button recipe is one style reused on course cards, book cards, tabs and the sticky bar, and the ink button appears only in the no-script fallback */
 /* Hallmark · dismissed 58 · the screen at that depth is the FAQ, four short answers a visitor opens one at a time */
 /* Design tokens only. Change colours, type and spacing here. */
 
 :root {
-  /* chapter colours: each page section owns one flat field */
-  --color-orange: #F26B1D;
-  --color-orange-bright: #FF7A2E;
-  --color-orange-deep: #B4380A;
-  --color-orange-soft: #FFE3D0;
-  --color-green: #1C7A3E;
-  --color-green-deep: #14532D;
-  --color-green-soft: #DCEFE1;
-  --color-ink: #12130F;
-  --color-ink-2: #23251F;
-  --color-ink-soft: #4A4D45;
-  --color-paper: #F6F8F4;
-  --color-paper-2: #E9EEE6;
-  --color-slip: #FFFFFD;
-  --color-line: #D5DBD0;
-  --color-on-ink: #F6F8F4;
-  --color-on-ink-soft: #C7CCC1;
-  --color-on-green: #F6F8F4;
-  --color-focus: #12130F;
-  --color-shadow: rgba(18, 19, 15, 0.2);
+  /* palette: near-black ink, warm paper, white cards, one accent (saffron) */
+  --color-ink: #111110;
+  --color-charcoal: #2A2A27;
+  --color-ink-soft: #4A4741;
+  --color-paper: #F6F1E7;
+  --color-paper-2: #ECE4D4;
+  --color-slip: #FFFEFA;
+  --color-line: #D6CCB8;
+  --color-on-ink: #F6F1E7;
+  --color-on-ink-soft: #CFC7B6;
+  --color-saffron: #F2A900;
+  --color-saffron-bright: #FFBE1F;
+  --color-saffron-soft: #FFE7A3;
+  --color-focus: #111110;
+  --color-focus-on-dark: #F2A900;
+  --color-shadow: rgba(17, 17, 16, 0.22);
 
-  /* background vectors: low contrast, one tone per chapter */
-  --color-deco-orange: rgba(18, 19, 15, 0.16);
-  --color-deco-green: rgba(246, 248, 244, 0.22);
-  --color-deco-paper: rgba(18, 19, 15, 0.09);
-  --color-deco-ink: rgba(246, 248, 244, 0.14);
+  /* background vectors: low contrast, light lines on dark chapters, dark lines on light ones */
+  --color-deco-dark: rgba(246, 241, 231, 0.12);
+  --color-deco-light: rgba(17, 17, 16, 0.08);
 
-  /* type */
-  --font-display: 'Anek Bangla', 'Hind Siliguri', 'Noto Sans Bengali', system-ui, sans-serif;
-  --font-body: 'Hind Siliguri', 'Noto Sans Bengali', system-ui, sans-serif;
-  --text-xs: 0.8125rem;
-  --text-s: 0.9375rem;
-  --text-base: 1rem;
-  --text-m: 1.125rem;
-  --text-l: clamp(1.375rem, 5.2vw, 1.75rem);
-  --text-xl: clamp(1.875rem, 7.4vw, 2.75rem);
-  --text-hero: clamp(2.375rem, 11.4vw, 5rem);
-  --leading-tight: 1.25;
-  --leading-body: 1.6;
+  /* type: one family, Kona (QNA Font), regular and bold */
+  --font-display: 'Kona', 'Kalpurush', 'Noto Sans Bengali', sans-serif;
+  --font-body: 'Kona', 'Kalpurush', 'Noto Sans Bengali', sans-serif;
+  --text-xs: 0.875rem;
+  --text-s: 1rem;
+  --text-base: 1.0625rem;
+  --text-m: 1.1875rem;
+  --text-l: clamp(1.4375rem, 5.4vw, 1.875rem);
+  --text-xl: clamp(1.9375rem, 7.6vw, 2.875rem);
+  --text-hero: clamp(2.375rem, 11vw, 4.75rem);
+  --leading-tight: 1.3;
+  --leading-body: 1.65;
 
   /* space (4px base) */
   --space-1: 0.25rem;

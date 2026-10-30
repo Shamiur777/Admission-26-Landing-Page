@@ -2,7 +2,7 @@
 import { mkdirSync, rmSync, readdirSync, lstatSync, copyFileSync, statSync } from 'node:fs';
 import { join, extname, dirname, resolve, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { validate, ALLOWED_EXT } from './validate.mjs';
+import { validate, ALLOWED_EXT, ALLOWED_FILES } from './validate.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -26,7 +26,7 @@ function copyDir(src) {
     const st = lstatSync(p);
     if (name.startsWith('.') || st.isSymbolicLink()) { console.error(`refusing ${rel} (dotfile or symlink)`); process.exit(1); }
     if (st.isDirectory()) { copyDir(p); continue; }
-    if (!ALLOWED_EXT.has(extname(name).toLowerCase())) { console.error(`refusing ${rel} (extension not allowed)`); process.exit(1); }
+    if (!ALLOWED_EXT.has(extname(name).toLowerCase()) && !ALLOWED_FILES.has(rel)) { console.error(`refusing ${rel} (extension not allowed)`); process.exit(1); }
     mkdirSync(dirname(join(DIST, rel)), { recursive: true });
     copyFileSync(p, join(DIST, rel));
     staged.push(rel);

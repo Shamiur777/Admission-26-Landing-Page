@@ -45,6 +45,41 @@ function couponPrice(price, percent) {
   return Math.round(price * (1 - percent / 100));
 }
 
+const MONTHS = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+const DHAKA_OFFSET_MS = 6 * 3600 * 1000;
+
+/**
+ * Part of the day for an hour on the 24-hour clock (Bangladesh usage):
+ * ভোর 4 to 6, সকাল 6 to 12, দুপুর 12 to 15, বিকেল 15 to 18, সন্ধ্যা 18 to 20, রাত 20 to 4.
+ * @param {number} hour 0 to 23
+ * @returns {string}
+ */
+function dayPeriod(hour) {
+  if (hour >= 4 && hour < 6) return 'ভোর';
+  if (hour >= 6 && hour < 12) return 'সকাল';
+  if (hour >= 12 && hour < 15) return 'দুপুর';
+  if (hour >= 15 && hour < 18) return 'বিকেল';
+  if (hour >= 18 && hour < 20) return 'সন্ধ্যা';
+  return 'রাত';
+}
+
+/**
+ * The deadline in words, in Bangladesh time (fixed UTC+6), for example "৩ নভেম্বর, সন্ধ্যা ৭টা".
+ * 12-hour clock; minutes appear only when they are not zero ("রাত ১২টা ৩০ মিনিট").
+ * Pure: no clock, no locale, so it reads the same on every phone.
+ * @param {string} endsAt ISO date with an explicit offset
+ * @returns {string} empty when the date cannot be read
+ */
+export function deadlineLabel(endsAt) {
+  const ms = Date.parse(endsAt);
+  if (Number.isNaN(ms)) return '';
+  const dhaka = new Date(ms + DHAKA_OFFSET_MS);
+  const hour = dhaka.getUTCHours();
+  const minute = dhaka.getUTCMinutes();
+  const clock = toBanglaDigits(hour % 12 || 12) + 'টা' + (minute ? ' ' + toBanglaDigits(minute) + ' মিনিট' : '');
+  return `${toBanglaDigits(dhaka.getUTCDate())} ${MONTHS[dhaka.getUTCMonth()]}, ${dayPeriod(hour)} ${clock}`;
+}
+
 /** An offset is required: without one, Date.parse uses the visitor's own timezone. */
 const EXPLICIT_OFFSET = /(Z|[+-]\d\d:\d\d)$/;
 
@@ -112,6 +147,8 @@ export function getOffer(offerConfig, now) {
       bookPercentFigure: bookPercent,
       bookUpTo,
       bookTag: `${couponCode} কুপনে ${bookPercentFull} ছাড়`,
+      /** "৩ নভেম্বর, সন্ধ্যা ৭টা": when the Offer stops, in words, Bangladesh time. */
+      deadline: deadlineLabel(endsAt),
       copyCouponAria: `কুপন ${couponCode} কপি করো`,
       couponFieldAria: `কুপন কোড ${couponCode}`,
     },

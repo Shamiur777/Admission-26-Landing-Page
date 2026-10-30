@@ -9,8 +9,8 @@ The page runs no server code, has no forms and stores no user data. Enrolment an
 ```
 index.html              the page (copy lives here)
 _headers                security + cache headers (Cloudflare Pages / Netlify format)
-assets/css/             styles (fonts.css declares the self-hosted fonts)
-assets/fonts/           self-hosted font files (woff2)
+assets/css/             styles (fonts.css declares the self-hosted font; tokens.css holds every colour)
+assets/fonts/           Kona (QNA Font) as woff2, plus Kona-OFL.txt, its licence
 assets/js/config.js     offer (coupon, deadline, percents), phone, tracking IDs, link allowlists
 assets/js/offer.js      the Offer module: status, time left, coupon prices, offer text (pure)
 tests/                  node:test tests for the Offer module and the index.html meta text
@@ -44,11 +44,23 @@ PRODUCT.md              design context for the page (not uploaded)
 | Link to a new website | Add its host to `ALLOWED_LINK_HOSTS` in `config.js`, or the link will not render |
 | Pass UTM/fbclid to another host | Add it to `ATTRIBUTION_HOSTS` in `config.js` |
 
+### Deadline in words, prompts and copy messages
+
+`offer.js` turns `endsAt` into a Bangla label in Bangladesh time (`deadlineLabel()`, exposed as `labels.deadline`), for example "৩ নভেম্বর, সন্ধ্যা ৭টা". It shows under the coupon slip and in the top bar, and follows `endsAt` with no other edit. Each list has a slim prompt after its sixth card ("QNA-র ১৮টি বইও আছে" in the courses list, "২৪টি কোর্সও আছে" in the books list). The prompts are `[data-prompt]` links in `index.html`; `main.js` moves them after the sixth card and `shop.js` does not count them as cards. After a coupon copy tap the page shows a message for 3 seconds ("কোড কপি হয়েছে, চেকআউটে পেস্ট করো", or "কোডটি লিখে নাও: REVENGE" if the browser blocks the clipboard) and selects the code text so a long-press can copy it.
+
+### Font and colours
+
+The whole page is set in one family, Kona (the QNA Font), regular and bold, from `assets/fonts/kona-regular.woff2` and `kona-bold.woff2`. They are subsets with Bengali, Latin and punctuation. The fallback stack is Kalpurush, then Noto Sans Bengali. Kona has no check mark, so "কপি হয়েছে" shows a drawn tick icon (`#i-check` in the sprite). Do not type "✓" in the copy: it would fall back to another font.
+
+Kona is licensed under the SIL Open Font License 1.1. `assets/fonts/Kona-OFL.txt` is that licence and must be uploaded with the font files (`validate.mjs` and `stage.mjs` allow exactly that one `.txt`). Kona descends from Kalpurush (OmicronLab) for Bengali and Liberation Serif for Latin; the licence file names both. The footer says the page is set in the QNA Font.
+
+Colours are CSS custom properties in `assets/css/tokens.css`: near-black ink, warm paper, white cards and one accent, saffron. Saffron is only a fill, a mark or an underline, never text on a light background.
+
 ### Page order and shop tabs
 
 The page runs top to bottom as: offer bar, hero, free live classes, shop, how to use the coupon, FAQ, footer. The shop has two ARIA tabs, courses and books, and one list shows at a time. Links to `#courses` and `#books` select the right tab and scroll to it (changing tab on the page also updates the hash, so a shared or reloaded URL opens the same tab), so an ad can point at `https://edgecoursebd.com/admission26/#books`. The hero's two path tiles and the sticky bottom bar use the same links.
 
-The two hero tiles each show a fan of three pictures. Which ones is set by `FEATURED` at the bottom of `catalog.js` (item ids; the middle one sits in front).
+The two hero tiles each show a fan of three pictures. Which ones is set by `FEATURED` at the bottom of `catalog.js` (item ids; the middle one sits in front). The same fans appear on the hand-off card at the end of each list ("এবার QNA-র বইগুলো দেখো" after the courses, "কোর্সগুলো দেখো" after the books). Those cards are plain links to `#books` and `#courses`, so they use the same tab switching as every other link. The two tabs are saffron buttons with an icon; the open one turns ink with a saffron underline.
 
 Every outbound link opens in a new tab. This is set in one place, `setLink()` in `assets/js/cards.js`; `buildLink()` in `assets/js/links.js` vets the URL first.
 

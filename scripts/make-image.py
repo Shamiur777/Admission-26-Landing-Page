@@ -34,7 +34,7 @@ OG_FONTS = {
     "regular": ["C:/Windows/Fonts/arial.ttf", "/System/Library/Fonts/Supplemental/Arial.ttf",
                 "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", "/usr/share/fonts/dejavu/DejaVuSans.ttf"],
 }
-ORANGE, ORANGE_DEEP, GREEN, INK, WHITE, GREY = "#F26B1D", "#B4380A", "#1C7A3E", "#12130E", "#FFFFFF", "#44463F"
+SAFFRON, INK, CREAM, WHITE, GREY = "#F2A900", "#111110", "#F6F1E7", "#FFFFFF", "#4A4741"
 
 
 def save_course(img: Image.Image, item_id: str) -> None:
@@ -91,27 +91,27 @@ def save_og() -> None:
             tried = "\n  ".join(candidates)
             sys.exit(f"og: no {role} font found. Tried:\n  {tried}\nInstall one or add a path to OG_FONTS in this script.")
     font = lambda name, size: ImageFont.truetype(paths[name], size)
-    img = Image.new("RGB", (1200, 630), ORANGE)
+    img = Image.new("RGB", (1200, 630), INK)
     d = ImageDraw.Draw(img)
 
     # Brand pill
     d.rounded_rectangle((60, 50, 860, 113), radius=32, fill=WHITE)
     x = 90
-    for text, color, name in (("Edge Course", ORANGE_DEEP, "bold"), (" x ", GREY, "regular"), ("Hulkenstein", GREEN, "bold"),
+    for text, color, name in (("Edge Course", INK, "bold"), (" x ", GREY, "regular"), ("Hulkenstein", INK, "bold"),
                               (" x ", GREY, "regular"), ("QNA Publication", INK, "bold")):
         d.text((x, 81), text, font=font(name, 34), fill=color, anchor="lm")
         x += d.textlength(text, font=font(name, 34))
 
-    d.text((58, 282), "Admission 2026", font=font("display", 130), fill=INK, anchor="ls")
+    d.text((58, 282), "Admission 2026", font=font("display", 130), fill=CREAM, anchor="ls")
 
     # Coupon ticket with a perforated divider and two notches
-    d.rounded_rectangle((60, 360, 1140, 570), radius=28, fill=WHITE)
-    d.text((100, 402), "COUPON CODE", font=font("bold", 26), fill=GREY, anchor="lm")
-    d.text((100, 530), offer["code"], font=font("display", 96), fill=ORANGE_DEEP, anchor="ls")
+    d.rounded_rectangle((60, 360, 1140, 570), radius=28, fill=SAFFRON)
+    d.text((100, 402), "COUPON CODE", font=font("bold", 26), fill=INK, anchor="lm")
+    d.text((100, 530), offer["code"], font=font("display", 96), fill=INK, anchor="ls")
     for y in range(378, 552, 14):
         d.line((700, y, 700, y + 8), fill=INK, width=3)
-    d.ellipse((680, 340, 720, 380), fill=ORANGE)
-    d.ellipse((680, 550, 720, 590), fill=ORANGE)
+    d.ellipse((680, 340, 720, 380), fill=INK)
+    d.ellipse((680, 550, 720, 590), fill=INK)
     d.text((750, 458), f"{offer['courses']}% OFF", font=font("display", 70), fill=INK, anchor="ls")
     d.text((752, 490), "courses", font=font("bold", 28), fill=INK, anchor="lm")
     books = f"{'up to ' if offer['up_to'] else ''}{offer['books']}% off books"

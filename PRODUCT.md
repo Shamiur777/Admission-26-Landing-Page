@@ -32,7 +32,7 @@ No invented proof: no student counts for courses, ratings, testimonials or "popu
 
 ## Brand Commitments
 
-Edge Course logo colour is orange. Hulkenstein logo colour is green. Bangla-first copy in a native HSC register.
+The owner chose ink and saffron as the page palette and rejected the orange and green pairing of the two logos. The font is QNA Font (Kona). Bangla-first copy in a native HSC register.
 
 ## Evidence on Hand
 

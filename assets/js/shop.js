@@ -10,6 +10,7 @@ import { toBanglaDigits } from './format.js';
  * Markup contract (index.html #shop):
  *   [role=tablist] > [data-tab="<name>"]       the tab buttons
  *   [data-panel="<name>"]                      the tab panel; holds [data-items] (the cards) and [data-status]
+ *   [data-prompt]                              a link inside [data-items] that is not a card (it is never filtered or counted)
  *   [data-chips="<name>"] > [data-filter]      the chip row for that tab ("all" or a category id)
  *   [data-status-template]                     status copy on [data-status], "{n}" is the Bangla-digit count
  *   [data-shop-anchor]                         first element under the sticky bar (deep links scroll to it)
@@ -117,7 +118,7 @@ export function initShop({ shop, offerBar }) {
       status,
       template: status.dataset.statusTemplate,
       buttons: Array.from(chips.querySelectorAll('[data-filter]')),
-      cards: Array.from(items.children).map((el, id) => ({ el, id, category: el.dataset.category })),
+      cards: Array.from(items.children).filter((el) => !el.hasAttribute('data-prompt')).map((el, id) => ({ el, id, category: el.dataset.category })),
     }];
   }));
 
@@ -217,7 +218,8 @@ export function initShop({ shop, offerBar }) {
     event.preventDefault();
     show(found);
     record(found.tab);
-    reveal();
+    // A hand-off card at the end of a list swaps the panel under the visitor, so jump rather than glide.
+    reveal({ instant: Boolean(link.closest('[data-panel]')) });
   });
 
   window.addEventListener('hashchange', () => {

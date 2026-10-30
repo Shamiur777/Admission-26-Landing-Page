@@ -10,10 +10,20 @@ import { initStickyBar } from './stickybar.js';
 
 const $ = (selector) => document.querySelector(selector);
 const EAGER_IMAGES = 2;
+const PROMPT_AFTER = 6;
 
 /** Items of `list` whose ids are named in `ids`, in the order of `ids`. */
 function pick(list, ids) {
   return ids.map((id) => list.find((item) => item.id === id)).filter(Boolean);
+}
+
+/** Moves a list's [data-prompt] link to just after the sixth card (or the last card, if fewer). */
+function placePrompts(list) {
+  const prompt = list.querySelector('[data-prompt]');
+  if (!prompt) return;
+  const cards = Array.from(list.children).filter((el) => el !== prompt);
+  const anchor = cards[Math.min(PROMPT_AFTER, cards.length) - 1];
+  if (anchor) anchor.after(prompt);
 }
 
 function start() {
@@ -28,10 +38,14 @@ function start() {
   renderCourses($('#course-grid'), $('#tpl-course'), COURSES, COURSE_CATEGORIES, initial === 'courses' ? EAGER_IMAGES : 0);
   renderChips($('#book-chips'), $('#tpl-chip'), BOOK_CATEGORIES);
   renderBooks($('#book-grid'), $('#tpl-book'), BOOKS, initial === 'books' ? EAGER_IMAGES : 0);
-  renderFan($('[data-fan="courses"]'), $('#tpl-fan'), pick(COURSES, FEATURED.courses), 'courses');
-  renderFan($('[data-fan="books"]'), $('#tpl-fan'), pick(BOOKS, FEATURED.books), 'books');
+  // Fans appear in the hero tiles and in the hand-off cards at the end of each list.
+  document.querySelectorAll('[data-fan="courses"]').forEach((el) => renderFan(el, $('#tpl-fan'), pick(COURSES, FEATURED.courses), 'courses'));
+  document.querySelectorAll('[data-fan="books"]').forEach((el) => renderFan(el, $('#tpl-fan'), pick(BOOKS, FEATURED.books), 'books'));
   renderLive($('#live-list'), $('#tpl-live'), LIVE_CHANNELS);
   document.querySelectorAll('.grid, .live-grid').forEach((el) => el.setAttribute('data-ready', ''));
+
+  placePrompts($('#course-grid'));
+  placePrompts($('#book-grid'));
 
   initShop({ shop: $('#shop'), offerBar: $('#offer-bar') });
 
