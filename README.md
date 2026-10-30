@@ -4,6 +4,8 @@ A static landing page for the Edge Course / Hulkenstein admission courses and QN
 
 The page runs no server code, has no forms and stores no user data. Enrolment and purchase happen on edgecoursebd.com.
 
+**Deploying it?** Follow `docs/RELEASE-CHECKLIST.md` step by step. It points to the [Deploy](#deploy) section below and to `docs/SECURITY-EDGE.md` for the server headers.
+
 ## Folder map
 
 ```
