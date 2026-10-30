@@ -24,7 +24,7 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - HSTS is left to the owner of the main domain.
 - Offer deadline is 2026-11-03 19:00 +06:00. Code `REVENGE`: 40% on courses, up to 20% on books.
 - Phone numbers use English digits. Everything else uses Bangla digits.
-- Books are sold on Rokomari only. Course links go to edgecoursebd.com.
+- Books are bought on Rokomari: each card links to its product page, and one button links to the QNA publisher page. The footer links to qnapublication.com (owner request, 2026-10-31). Course links go to edgecoursebd.com.
 - All outbound links open in a new tab.
 - The shop has two tabs. `#courses` and `#books` are deep links, so ads can point straight at either.
 
