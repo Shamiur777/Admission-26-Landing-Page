@@ -1,15 +1,15 @@
-/* Hallmark · custom · theme ink-and-saffron · genre editorial · Kona (QNA Font) one family · signature the coupon as a perforated saffron slip, courses and books as two equal paths · hero: custom, headline left and two path tiles with the coupon slip right on a flat ink field · nav: none, a sticky offer bar and a brand strip · footer: ink band, brand name over phone and site link */
-/* Hallmark · critique · the orange and green pairing read as a clash on a phone; this build keeps one accent, saffron, on near-black and warm paper, so the coupon and the tabs are the only bright things */
+/* Hallmark · custom · theme ink-and-green · genre editorial · Kona (QNA Font) one family · signature the coupon as a perforated green slip, courses and books as two equal paths · hero: custom, headline left and two path tiles with the coupon slip right on a flat ink field · nav: none, a sticky offer bar and a brand strip · footer: ink band, brand name over phone and site link */
+/* Hallmark · critique · the orange and green pairing read as a clash on a phone; this build keeps one accent, green, on near-black and warm paper, so the coupon and the tabs are the only bright things */
 /* Hallmark · waive 26b · no form control and no aria-disabled in index.html · the page has only buttons and links, so a disabled state would never show */
 /* Hallmark · waive 83 · the shop is a catalogue of the owner's own course posters and book covers · the pictures are the products on sale, so each one must show */
 /* Hallmark · waive 44c · stamp declares a custom hero with the path tiles and slip as its visual · the large atom vector behind the hero is decoration, so the measured visual is the wrong element */
 /* Hallmark · answered F25 · the course poster image already prints the same highlight lines, so the phone row drops the duplicate text list */
-/* Hallmark · dismissed F4 · the saffron button recipe is one style reused on course cards, book cards, tabs and the sticky bar, and the ink button appears only in the no-script fallback */
+/* Hallmark · dismissed F4 · the green button recipe is one style reused on course cards, book cards, tabs and the sticky bar, and the ink button appears only in the no-script fallback */
 /* Hallmark · dismissed 58 · the screen at that depth is the FAQ, four short answers a visitor opens one at a time */
 /* Design tokens only. Change colours, type and spacing here. */
 
 :root {
-  /* palette: near-black ink, warm paper, white cards, one accent (saffron) */
+  /* palette: near-black ink, warm paper, white cards, one accent (green) */
   --color-ink: #111110;
   --color-charcoal: #2A2A27;
   --color-ink-soft: #4A4741;
@@ -19,11 +19,11 @@
   --color-line: #D6CCB8;
   --color-on-ink: #F6F1E7;
   --color-on-ink-soft: #CFC7B6;
-  --color-saffron: #F2A900;
-  --color-saffron-bright: #FFBE1F;
-  --color-saffron-soft: #FFE7A3;
+  --color-green: #01AD01;
+  --color-green-bright: #1FC21F;
+  --color-green-soft: #D6F5D1;
   --color-focus: #111110;
-  --color-focus-on-dark: #F2A900;
+  --color-focus-on-dark: #01AD01;
   --color-shadow: rgba(17, 17, 16, 0.22);
 
   /* background vectors: low contrast, light lines on dark chapters, dark lines on light ones */

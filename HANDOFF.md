@@ -77,6 +77,7 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
   - A Bangla Rokomari button.
 - Rejected from the council: English digits for percentages (owner rule), and moving live links down (owner request).
 - Left for the owner: per-course Bangla descriptions, and a real Android test in the Facebook browser.
+- Accent colour changed from saffron to Hulkenstein green #01AD01 (sampled from the logo) at the owner's request. Tokens are `--color-green*`. Ink text on green is 6.28:1. Green is never used as text on a light background. Share image redrawn. Browser-tab icon is the Hulkenstein arms-and-brain mark.
 
 ## Playbook section 16 checklist (static page)
 

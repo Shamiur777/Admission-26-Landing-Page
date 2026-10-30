@@ -44,7 +44,7 @@ a { color: inherit; }
   border-radius: var(--radius-s);
 }
 
-::selection { background: var(--color-saffron); color: var(--color-ink); }
+::selection { background: var(--color-green); color: var(--color-ink); }
 
 .container {
   position: relative;

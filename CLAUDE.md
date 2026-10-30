@@ -6,7 +6,7 @@ A static Bangla landing page for the Edge Course / Hulkenstein Admission 26 cour
 
 ## Stack
 
-Plain HTML, CSS and ES modules. No build step, no dependencies, no server code, no forms. One font family, Kona (QNA Font, SIL OFL 1.1): `assets/fonts/Kona-OFL.txt` must ship with the woff2 files. One accent colour, saffron, on ink and paper; all colours live in `assets/css/tokens.css`. Meta Pixel and GTM load only if their IDs are set in `assets/js/config.js`.
+Plain HTML, CSS and ES modules. No build step, no dependencies, no server code, no forms. One font family, Kona (QNA Font, SIL OFL 1.1): `assets/fonts/Kona-OFL.txt` must ship with the woff2 files. One accent colour, green, on ink and paper; all colours live in `assets/css/tokens.css`. Meta Pixel and GTM load only if their IDs are set in `assets/js/config.js`.
 
 ## Commands
 

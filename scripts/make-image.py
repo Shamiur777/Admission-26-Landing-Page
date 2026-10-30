@@ -34,7 +34,7 @@ OG_FONTS = {
     "regular": ["C:/Windows/Fonts/arial.ttf", "/System/Library/Fonts/Supplemental/Arial.ttf",
                 "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", "/usr/share/fonts/dejavu/DejaVuSans.ttf"],
 }
-SAFFRON, INK, CREAM, WHITE, GREY = "#F2A900", "#111110", "#F6F1E7", "#FFFFFF", "#4A4741"
+GREEN, INK, CREAM, WHITE, GREY = "#01AD01", "#111110", "#F6F1E7", "#FFFFFF", "#4A4741"
 
 
 def save_course(img: Image.Image, item_id: str) -> None:
@@ -105,7 +105,7 @@ def save_og() -> None:
     d.text((58, 282), "Admission 2026", font=font("display", 130), fill=CREAM, anchor="ls")
 
     # Coupon ticket with a perforated divider and two notches
-    d.rounded_rectangle((60, 360, 1140, 570), radius=28, fill=SAFFRON)
+    d.rounded_rectangle((60, 360, 1140, 570), radius=28, fill=GREEN)
     d.text((100, 402), "COUPON CODE", font=font("bold", 26), fill=INK, anchor="lm")
     d.text((100, 530), offer["code"], font=font("display", 96), fill=INK, anchor="ls")
     for y in range(378, 552, 14):
