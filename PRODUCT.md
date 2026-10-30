@@ -16,7 +16,7 @@ HSC students in Bangladesh preparing for university admission (inferred: age 17 
 
 ## Product Purpose
 
-Landing page for Edge Course x Hulkenstein admission courses (24) and QNA Publication admission books (18). Visitors should enrol in a course or order a book on edgecoursebd.com or Rokomari with the coupon REVENGE (courses 40% off, books up to 20% off, 72-hour window). Free live classes are the low-commitment first step.
+Landing page for Edge Course x Hulkenstein admission courses (24) and QNA Publication admission books (18). Visitors should enrol in a course or order a book on edgecoursebd.com or Rokomari with the coupon REVENGE (courses 40% off, books up to 20% off, 72-hour window). Free free guidelines are the low-commitment first step.
 
 ## Positioning
 
@@ -36,7 +36,7 @@ The owner chose ink and saffron as the page palette and rejected the orange and 
 
 ## Evidence on Hand
 
-Course posters (24), real QNA book covers (18), course prices, mentor institutions from the posters, seven live channels, owner proof lines for books.
+Course posters (24), real QNA book covers (18), course prices, mentor institutions from the posters, seven free guideline channels, owner proof lines for books.
 
 ## Product Principles
 
