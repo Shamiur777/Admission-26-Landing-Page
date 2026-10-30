@@ -286,6 +286,7 @@
 .hero__urgency { font-size: var(--text-s); font-weight: 700; color: var(--color-on-ink); }
 
 .brand-strip__note { margin-top: var(--space-2); font-size: var(--text-xs); line-height: 1.5; color: var(--color-on-ink-soft); max-width: 34rem; }
+.brand-strip__link { color: var(--color-on-ink); text-decoration: underline; text-underline-offset: 0.15em; }
 .hero__actions { display: grid; gap: var(--space-3); margin-top: var(--space-4); max-width: 24rem; }
 .hero__deadline { font-size: var(--text-s); color: var(--color-on-ink-soft); }
 .hero__deadline b { color: var(--color-on-ink); }
@@ -418,7 +419,6 @@
 .proof__note { position: relative; z-index: 1; margin-bottom: var(--space-3); font-size: var(--text-s); color: var(--color-on-ink-soft); }
 .proof__list { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
 .proof__item { font-size: var(--text-xs); line-height: 1.35; }
-.books-all { display: grid; gap: var(--space-3); margin-top: var(--space-5); }
 .proof__item b { display: block; font-weight: 700; font-size: clamp(1.125rem, 5.2vw, 1.5rem); line-height: 1.15; color: var(--color-green); }
 
 /* ---------- grids ---------- */
