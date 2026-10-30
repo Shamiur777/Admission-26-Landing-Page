@@ -1,0 +1,73 @@
+/* Hallmark · custom · theme edge-paper · genre editorial · Anek Bangla + Hind Siliguri · signature the coupon as a tear-off ticket */
+/* Hallmark · critique · the old page was dark gradients; this one is warm paper with one orange accent, and the course posters carry the colour */
+/* Hallmark · waive 26b · no form control and no aria-disabled in index.html · the page has only buttons and links, so a disabled state would never show */
+/* Design tokens only. Change colours, type and spacing here. */
+
+:root {
+  /* colour: paper and ink */
+  --color-paper: #FBF7F0;
+  --color-sand: #F2EADB;
+  --color-surface: #FFFDF9;
+  --color-ink: #1C1712;
+  --color-ink-soft: #52483D;
+  --color-line: #E4D8C5;
+  --color-on-ink: #FBF7F0;
+  --color-on-ink-soft: #CFC4B2;
+  --color-ink-2: #2B241C;
+  --color-accent-bright: #FF8A3D;
+
+  /* colour: brand accents (white text on both passes AA) */
+  --color-accent: #C2410C;
+  --color-accent-strong: #9A3412;
+  --color-accent-soft: #FCE4D2;
+  --color-green: #1C7A3E;
+  --color-green-ink: #14532D;
+  --color-green-soft: #DDEFE0;
+  --color-focus: #1C1712;
+  --color-shadow: rgba(28, 23, 18, 0.18);
+  --color-accent-ink: #FFFDF8;
+
+  /* type */
+  --font-display: 'Anek Bangla', 'Hind Siliguri', 'Noto Sans Bengali', system-ui, sans-serif;
+  --font-body: 'Hind Siliguri', 'Noto Sans Bengali', system-ui, sans-serif;
+  --text-xs: 0.8125rem;
+  --text-s: 0.9375rem;
+  --text-base: 1rem;
+  --text-m: 1.125rem;
+  --text-l: clamp(1.375rem, 5.2vw, 1.75rem);
+  --text-xl: clamp(1.75rem, 6.4vw, 2.5rem);
+  --text-hero: clamp(2.125rem, 9.4vw, 4.25rem);
+  --leading-tight: 1.3;
+  --leading-body: 1.6;
+
+  /* space (4px base) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 6rem;
+
+  /* layout */
+  --container: 70rem;
+  --gutter: 1rem;
+  --offer-bar-h: 3.25rem;
+  --chips-bar-h: 4rem;
+  --tap: 2.75rem;
+
+  /* shape */
+  --radius-s: 0.5rem;
+  --radius-m: 0.875rem;
+  --radius-pill: 62rem;
+
+  /* motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur: 160ms;
+}
+
+@media (min-width: 600px) {
+  :root { --gutter: 1.5rem; }
+}

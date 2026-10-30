@@ -1,0 +1,12 @@
+_source/
+node_modules/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+Links and Other info.txt
+*.crdownload
+*.part
+.env*
+__pycache__/
+.claude/

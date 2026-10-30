@@ -1,0 +1,32 @@
+# Cloudflare Pages / Workers Static Assets / Netlify format.
+# Paths are relative to the site root. If this folder is served at /admission26/ on
+# edgecoursebd.com, prefix every path below with /admission26/ (see README).
+# The CSP must stay identical in index.html (meta, without frame-ancestors),
+# deploy/nginx-security-headers.conf and deploy/apache.htaccess.
+# HSTS is deliberately not set here: it is a domain-wide policy for the site owner.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self'; font-src 'self'; img-src 'self' https://www.facebook.com https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; base-uri 'self'; form-action 'none'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), usb=(), interest-cohort=(), browsing-topics=()
+  Cross-Origin-Opener-Policy: same-origin
+
+# Cache rules are listed per path, not under /*, because Cloudflare and Netlify merge
+# duplicate headers from every matching rule instead of overriding them.
+# Images and fonts never change under the same name (new file = new name): cache for a year.
+/assets/img/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Code and HTML are edited without renaming files (no hashed names): 5-minute cache.
+/
+  Cache-Control: public, max-age=300
+/index.html
+  Cache-Control: public, max-age=300
+/assets/js/*
+  Cache-Control: public, max-age=300
+/assets/css/*
+  Cache-Control: public, max-age=300
