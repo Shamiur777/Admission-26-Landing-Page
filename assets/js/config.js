@@ -1,17 +1,24 @@
 /**
  * Site settings. This is the file to edit for a new campaign.
  * Course, book and live-channel content lives in catalog.js.
+ *
+ * Campaign checklist. Everything on the page reads OFFER below, except these
+ * hand-typed spots. Change them too (tests/meta.test.js fails if the text drifts):
+ *   1. index.html <title>
+ *   2. index.html <meta name="description">
+ *   3. index.html <meta property="og:description">
+ *   4. index.html <meta name="twitter:description">
+ *   5. assets/img/og-cover.jpg: run `python scripts/make-image.py og`
  */
 
 export const OFFER = {
   couponCode: 'REVENGE',
-  courseDiscountPercent: 40,
-  bookDiscountPercent: 20,
-  // true: books read "২০% পর্যন্ত" (up to 20%). false: a flat 20%.
-  bookDiscountIsMax: true,
-  // 72-hour campaign window, Bangladesh time (+06:00).
-  // The countdown hides itself after this moment; the coupon text stays.
-  endsAt: '2026-11-03T00:00:00+06:00',
+  // Bangladesh time (+06:00). 72 hours from 31 Oct 2026, 7:00 PM.
+  // At this moment the page flips to "offer ended". An unreadable date also counts as ended.
+  endsAt: '2026-11-03T19:00:00+06:00',
+  courses: { percent: 40 },
+  // upTo: true prints "২০% পর্যন্ত" (the coupon gives at most 20%). false prints a flat "২০%".
+  books: { percent: 20, upTo: true },
 };
 
 export const CONTACT = {

@@ -3,21 +3,28 @@
 Usage:
   python scripts/make-image.py course <input.jpg> <course-id>
   python scripts/make-image.py book   <input.jpg> <book-id>
+  python scripts/make-image.py og
 Needs:  pip install pillow
 
 course  writes assets/img/courses/<id>-400.webp and -800.webp (square banner;
         images smaller than 800 px wide are upscaled to 800).
 book    writes assets/img/books/<id>.webp at 260x372 (centre-cropped to fit).
+og      redraws assets/img/og-cover.jpg (1200x630) from the coupon code and
+        percents in assets/js/config.js. English text only (PIL cannot shape Bangla).
+        Uses Windows fonts (Impact, Arial Bold); on another OS edit OG_FONTS below.
 """
 import re
 import sys
 from pathlib import Path
 
-from PIL import Image, ImageOps
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 IMG_DIR = Path(__file__).resolve().parent.parent / "assets" / "img"
 COURSE_SIZES = (400, 800)
 BOOK_SIZE = (260, 372)
+CONFIG_JS = Path(__file__).resolve().parent.parent / "assets" / "js" / "config.js"
+OG_FONTS = {"display": "C:/Windows/Fonts/impact.ttf", "bold": "C:/Windows/Fonts/arialbd.ttf", "regular": "C:/Windows/Fonts/arial.ttf"}
+ORANGE, ORANGE_DEEP, GREEN, INK, WHITE, GREY = "#F26B1D", "#B4380A", "#1C7A3E", "#12130E", "#FFFFFF", "#44463F"
 
 
 def save_course(img: Image.Image, item_id: str) -> None:
@@ -38,7 +45,71 @@ def save_book(img: Image.Image, item_id: str) -> None:
     print(f"{path.name}  {BOOK_SIZE[0]}x{BOOK_SIZE[1]}  {path.stat().st_size // 1024} KB")
 
 
+def read_offer() -> dict:
+    """Pull couponCode and the two percents out of the OFFER object in config.js."""
+    text = CONFIG_JS.read_text(encoding="utf-8")
+    block = re.search(r"export const OFFER\s*=\s*\{(.*?)\n\};", text, re.S)
+    if not block:
+        raise SystemExit(f"Could not find 'export const OFFER = {{ ... }};' in {CONFIG_JS}")
+    body = block.group(1)
+    patterns = {
+        "code": r"couponCode:\s*'([^']+)'",
+        "courses": r"courses:\s*\{\s*percent:\s*(\d+)",
+        "books": r"books:\s*\{\s*percent:\s*(\d+)",
+        "up_to": r"books:\s*\{[^}]*upTo:\s*(true|false)",
+    }
+    found = {}
+    for key, pattern in patterns.items():
+        m = re.search(pattern, body)
+        if not m:
+            raise SystemExit(f"Could not read '{key}' from OFFER in {CONFIG_JS}; update read_offer() in this script.")
+        found[key] = m.group(1)
+    return {
+        "code": found["code"],
+        "courses": int(found["courses"]),
+        "books": int(found["books"]),
+        "up_to": found["up_to"] == "true",
+    }
+
+
+def save_og() -> None:
+    offer = read_offer()
+    font = lambda name, size: ImageFont.truetype(OG_FONTS[name], size)
+    img = Image.new("RGB", (1200, 630), ORANGE)
+    d = ImageDraw.Draw(img)
+
+    # Brand pill
+    d.rounded_rectangle((60, 50, 860, 113), radius=32, fill=WHITE)
+    x = 90
+    for text, color, name in (("Edge Course", ORANGE_DEEP, "bold"), (" x ", GREY, "regular"), ("Hulkenstein", GREEN, "bold"),
+                              (" x ", GREY, "regular"), ("QNA Publication", INK, "bold")):
+        d.text((x, 81), text, font=font(name, 34), fill=color, anchor="lm")
+        x += d.textlength(text, font=font(name, 34))
+
+    d.text((58, 282), "Admission 2026", font=font("display", 130), fill=INK, anchor="ls")
+
+    # Coupon ticket with a perforated divider and two notches
+    d.rounded_rectangle((60, 360, 1140, 570), radius=28, fill=WHITE)
+    d.text((100, 402), "COUPON CODE", font=font("bold", 26), fill=GREY, anchor="lm")
+    d.text((100, 530), offer["code"], font=font("display", 96), fill=ORANGE_DEEP, anchor="ls")
+    for y in range(378, 552, 14):
+        d.line((700, y, 700, y + 8), fill=INK, width=3)
+    d.ellipse((680, 340, 720, 380), fill=ORANGE)
+    d.ellipse((680, 550, 720, 590), fill=ORANGE)
+    d.text((750, 458), f"{offer['courses']}% OFF", font=font("display", 70), fill=INK, anchor="ls")
+    d.text((752, 490), "courses", font=font("bold", 28), fill=INK, anchor="lm")
+    books = f"{'up to ' if offer['up_to'] else ''}{offer['books']}% off books"
+    d.text((752, 523), books, font=font("bold", 28), fill=INK, anchor="lm")
+
+    path = IMG_DIR / "og-cover.jpg"
+    img.save(path, "JPEG", quality=88, optimize=True)
+    print(f"{path.name}  1200x630  {path.stat().st_size // 1024} KB  ({offer['code']}, {offer['courses']}%, {offer['books']}%)")
+
+
 def main() -> int:
+    if len(sys.argv) == 2 and sys.argv[1] == "og":
+        save_og()
+        return 0
     if len(sys.argv) != 4 or sys.argv[1] not in ("course", "book"):
         print(__doc__)
         return 1

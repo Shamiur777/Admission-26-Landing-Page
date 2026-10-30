@@ -15,14 +15,14 @@
   <meta property="og:locale" content="bn_BD">
   <meta property="og:site_name" content="Edge Course">
   <meta property="og:title" content="Admission 2026: কোর্সে ৪০%, বইয়ে ২০% পর্যন্ত ছাড়, কুপন REVENGE">
-  <meta property="og:description" content="Hulkenstein-এর অ্যাডমিশন কোর্সে ৪০% এবং QNA Publication-এর বইয়ে ২০% পর্যন্ত ছাড়। ৭২ ঘণ্টার অফার।">
+  <meta property="og:description" content="Hulkenstein-এর অ্যাডমিশন কোর্সে ৪০% এবং QNA Publication-এর বইয়ে ২০% পর্যন্ত ছাড়। কুপন REVENGE, ৭২ ঘণ্টার অফার।">
   <meta property="og:url" content="https://edgecoursebd.com/admission26/">
   <meta property="og:image" content="https://edgecoursebd.com/admission26/assets/img/og-cover.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Admission 2026: কোর্সে ৪০%, বইয়ে ২০% পর্যন্ত ছাড়, কুপন REVENGE">
-  <meta name="twitter:description" content="Hulkenstein-এর অ্যাডমিশন কোর্সে ৪০% এবং QNA Publication-এর বইয়ে ২০% পর্যন্ত ছাড়।">
+  <meta name="twitter:description" content="Hulkenstein-এর অ্যাডমিশন কোর্সে ৪০% এবং QNA Publication-এর বইয়ে ২০% পর্যন্ত ছাড়। কুপন REVENGE।">
   <meta name="twitter:image" content="https://edgecoursebd.com/admission26/assets/img/og-cover.jpg">
 
   <link rel="preload" href="assets/fonts/anek-var-bengali.woff2" as="font" type="font/woff2" crossorigin>
@@ -39,8 +39,7 @@
   <link rel="modulepreload" href="assets/js/render.js">
   <link rel="modulepreload" href="assets/js/links.js">
   <link rel="modulepreload" href="assets/js/format.js">
-  <link rel="modulepreload" href="assets/js/tabs.js">
-  <link rel="modulepreload" href="assets/js/filters.js">
+  <link rel="modulepreload" href="assets/js/shop.js">
   <link rel="modulepreload" href="assets/js/countdown.js">
   <link rel="modulepreload" href="assets/js/coupon.js">
   <link rel="modulepreload" href="assets/js/stickybar.js">
@@ -112,7 +111,7 @@
 
   <div class="offer-bar" id="offer-bar">
     <div class="container offer-bar__inner">
-      <button class="offer-bar__code" type="button" data-coupon-copy aria-label="কুপন REVENGE কপি করো">
+      <button class="offer-bar__code" type="button" data-coupon-copy data-bind-label="copy-coupon" aria-label="কুপন REVENGE কপি করো">
         <span class="offer-bar__label">কুপন</span>
         <strong class="offer-bar__value" data-bind="coupon">REVENGE</strong>
         <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg>
@@ -187,7 +186,7 @@
             <div class="ticket__main">
               <span class="ticket__label">কুপন কোড</span>
               <strong class="ticket__code" data-bind="coupon">REVENGE</strong>
-              <button class="ticket__copy" type="button" data-coupon-copy aria-label="কুপন REVENGE কপি করো">
+              <button class="ticket__copy" type="button" data-coupon-copy data-bind-label="copy-coupon" aria-label="কুপন REVENGE কপি করো">
                 <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg>
                 <span data-copy-label>ট্যাপ করে কপি করো</span>
               </button>
@@ -235,15 +234,15 @@
       </div>
 
       <div class="container">
-        <div class="chips-row">
-          <div class="chips" id="course-chips" role="group" aria-label="কোর্সের ধরন"></div>
-          <div class="chips" id="book-chips" role="group" aria-label="বইয়ের ধরন" hidden></div>
+        <div class="chips-row" data-shop-anchor>
+          <div class="chips" id="course-chips" data-chips="courses" role="group" aria-label="কোর্সের ধরন"></div>
+          <div class="chips" id="book-chips" data-chips="books" role="group" aria-label="বইয়ের ধরন" hidden></div>
         </div>
-        <div class="panel" role="tabpanel" id="panel-courses" aria-labelledby="tab-courses">
-          <p class="visually-hidden" id="course-status" role="status"></p>
-          <div class="grid grid--courses" id="course-grid"></div>
+        <div class="panel" role="tabpanel" id="panel-courses" data-panel="courses" aria-labelledby="tab-courses">
+          <p class="visually-hidden" id="course-status" role="status" data-status data-status-template="{n}টি কোর্স দেখাচ্ছে"></p>
+          <div class="grid grid--courses" id="course-grid" data-items></div>
         </div>
-        <div class="panel" role="tabpanel" id="panel-books" aria-labelledby="tab-books" hidden>
+        <div class="panel" role="tabpanel" id="panel-books" data-panel="books" aria-labelledby="tab-books" hidden>
           <div class="proof">
             <svg class="deco deco--proof-book" aria-hidden="true" focusable="false"><use href="#v-book"/></svg>
             <svg class="deco deco--proof-ribbon" aria-hidden="true" focusable="false"><use href="#v-ribbon"/></svg>
@@ -254,8 +253,8 @@
               <li class="proof__item">সাফল্যের <b>৭ম</b> বছর</li>
             </ul>
           </div>
-          <p class="visually-hidden" id="book-status" role="status"></p>
-          <div class="grid grid--books" id="book-grid"></div>
+          <p class="visually-hidden" id="book-status" role="status" data-status data-status-template="{n}টি বই দেখাচ্ছে"></p>
+          <div class="grid grid--books" id="book-grid" data-items></div>
         </div>
       </div>
       <svg class="edge edge--to-ink" viewBox="0 0 360 20" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#e-wave"/></svg>
@@ -275,7 +274,7 @@
           <li class="steps__item">
             <h3 class="steps__title">চেকআউটে কুপন দাও</h3>
             <p class="steps__text">কুপন কোড বক্সে <b data-bind="coupon">REVENGE</b> লিখে অ্যাপ্লাই চাপো।</p>
-            <button class="btn btn--primary btn--small" type="button" data-coupon-copy aria-label="কুপন REVENGE কপি করো">
+            <button class="btn btn--primary btn--small" type="button" data-coupon-copy data-bind-label="copy-coupon" aria-label="কুপন REVENGE কপি করো">
               <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg>
               <span data-copy-label>কোড কপি করো</span>
             </button>
@@ -333,7 +332,7 @@
 
   <div class="sticky-bar" id="sticky-bar">
     <div class="sticky-bar__inner">
-      <button class="btn btn--primary offer-live" type="button" data-coupon-copy aria-label="কুপন REVENGE কপি করো">
+      <button class="btn btn--primary offer-live" type="button" data-coupon-copy data-bind-label="copy-coupon" aria-label="কুপন REVENGE কপি করো">
         <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg>
         <span data-copy-label><span data-bind="coupon">REVENGE</span> কপি</span>
       </button>
@@ -343,7 +342,7 @@
   </div>
 
   <div class="copy-toast" id="copy-toast" role="dialog" aria-label="কুপন কোড" hidden>
-    <input class="copy-toast__input" id="copy-toast-input" type="text" readonly value="REVENGE" aria-label="কুপন কোড REVENGE">
+    <input class="copy-toast__input" id="copy-toast-input" type="text" readonly value="REVENGE" data-bind-label="coupon-field" aria-label="কুপন কোড REVENGE">
     <p class="copy-toast__text">লম্বা চাপ দিয়ে কপি করো</p>
     <button class="copy-toast__close" id="copy-toast-close" type="button">বন্ধ করো</button>
   </div>

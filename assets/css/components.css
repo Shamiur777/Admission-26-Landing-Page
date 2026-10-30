@@ -1,7 +1,7 @@
 /* Components, in page order. Each block is named after its BEM root. */
 
 /* ---------- offer state ----------
-   main.js adds .offer-ended to <html> once OFFER.endsAt has passed.
+   bind.js adds .offer-ended to <html> once OFFER.endsAt has passed.
    .offer-live content is shown only while the offer runs; .offer-over only after it ends. */
 .offer-over { display: none; }
 .offer-ended .offer-live,
@@ -48,7 +48,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  min-height: var(--offer-bar-h);
+  min-height: var(--offer-bar-min);
 }
 .offer-bar__code {
   display: inline-flex;

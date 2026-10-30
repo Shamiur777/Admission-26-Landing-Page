@@ -1,6 +1,7 @@
 import { OFFER } from './config.js';
 import { buildLink, setExternalLink } from './links.js';
-import { bookDiscountText, discounted, formatTaka } from './format.js';
+import { formatTaka } from './format.js';
+import { getOffer } from './offer.js';
 
 const IMAGE_SIZES = '(min-width: 960px) 360px, (min-width: 600px) 45vw, 112px';
 const WIDE_NAME_LENGTH = 26;
@@ -52,6 +53,7 @@ export function renderChips(container, template, categories) {
  */
 export function renderCourses(list, template, courses, categories, eager) {
   const labels = Object.fromEntries(categories.map((c) => [c.id, c.label]));
+  const offer = getOffer(OFFER, Date.now());
   let index = 0;
   courses.forEach((course) => {
     const href = buildLink(course.url);
@@ -77,9 +79,10 @@ export function renderCourses(list, template, courses, categories, eager) {
       highlights.appendChild(li);
     });
 
-    part(card, 'regular-price').textContent = formatTaka(course.price);
-    part(card, 'coupon-price').textContent = formatTaka(discounted(course.price, OFFER.courseDiscountPercent));
-    part(card, 'coupon-code').textContent = OFFER.couponCode;
+    const price = offer.coursePrice(course.price);
+    part(card, 'regular-price').textContent = formatTaka(price.regular);
+    part(card, 'coupon-price').textContent = formatTaka(price.coupon);
+    part(card, 'coupon-code').textContent = offer.couponCode;
 
     const link = part(card, 'link');
     setExternalLink(link, href);
@@ -99,6 +102,7 @@ export function renderCourses(list, template, courses, categories, eager) {
  * @param {number} eager how many leading covers load eagerly (the rest are lazy)
  */
 export function renderBooks(list, template, books, eager) {
+  const offer = getOffer(OFFER, Date.now());
   let index = 0;
   books.forEach((book) => {
     const href = buildLink(book.url);
@@ -112,8 +116,8 @@ export function renderBooks(list, template, books, eager) {
     cover.loading = index < eager ? 'eager' : 'lazy';
 
     part(card, 'title').textContent = book.title;
-    part(card, 'coupon-code').textContent = OFFER.couponCode;
-    part(card, 'discount').textContent = `${bookDiscountText(OFFER)} ছাড়`;
+    part(card, 'coupon-code').textContent = offer.couponCode;
+    part(card, 'discount').textContent = `${offer.labels.bookPercent} ছাড়`;
 
     const link = part(card, 'link');
     setExternalLink(link, href);

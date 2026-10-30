@@ -20,39 +20,10 @@ export function formatTaka(amount) {
 }
 
 /**
- * Price after a percentage discount, rounded to whole taka.
- * @param {number} price
- * @param {number} percent
- * @returns {number}
- */
-export function discounted(price, percent) {
-  return Math.round(price * (1 - percent / 100));
-}
-
-/**
  * Zero-padded Bangla number, e.g. 7 -> "০৭".
  * @param {number} n
  * @returns {string}
  */
 export function padBangla(n) {
   return toBanglaDigits(String(n).padStart(2, '0'));
-}
-
-/**
- * "৪০%" for a percentage.
- * @param {number} percent
- * @returns {string}
- */
-export function percentText(percent) {
-  return toBanglaDigits(percent) + '%';
-}
-
-/**
- * Book discount as shown in running text: "২০% পর্যন্ত" when the offer is a maximum, else "২০%".
- * @param {{bookDiscountPercent: number, bookDiscountIsMax?: boolean}} offer
- * @returns {string}
- */
-export function bookDiscountText(offer) {
-  const base = percentText(offer.bookDiscountPercent);
-  return offer.bookDiscountIsMax ? base + ' পর্যন্ত' : base;
 }

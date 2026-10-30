@@ -1,31 +1,47 @@
 import { CONTACT, OFFER } from './config.js';
 import { COURSES, BOOKS } from './catalog.js';
-import { bookDiscountText, discounted, formatTaka, percentText, toBanglaDigits } from './format.js';
+import { formatTaka, toBanglaDigits } from './format.js';
+import { getOffer } from './offer.js';
 
 /**
- * Fills [data-bind] elements in the static HTML from config.js / catalog.js,
- * so every number is written once. The HTML keeps defaults for when script is off.
+ * The Offer module's only DOM adapter. Writes every offer-related [data-bind] text
+ * and [data-bind-label] screen-reader label from getOffer(), and sets or removes
+ * `offer-ended` on <html> to match the offer status. Call again to refresh
+ * (main.js does when the countdown reaches zero). The HTML keeps defaults for when script is off.
+ * @param {number} now epoch milliseconds (Date.now() in the page)
  */
-export function bindStaticText() {
-  const lowestCoursePrice = Math.min(...COURSES.map((c) => discounted(c.price, OFFER.courseDiscountPercent)));
-  const values = {
-    coupon: OFFER.couponCode,
-    'course-percent': percentText(OFFER.courseDiscountPercent),
-    'book-percent': percentText(OFFER.bookDiscountPercent),
-    'book-max': OFFER.bookDiscountIsMax ? 'পর্যন্ত' : '',
-    'book-discount': bookDiscountText(OFFER),
+export function bindOffer(now) {
+  const offer = getOffer(OFFER, now);
+  const { labels } = offer;
+  const texts = {
+    coupon: offer.couponCode,
+    'course-percent': labels.coursePercent,
+    'book-percent': labels.bookPercentFigure,
+    'book-max': labels.bookUpTo,
+    'book-discount': labels.bookPercent,
     'course-count': toBanglaDigits(COURSES.length),
     'book-count': toBanglaDigits(BOOKS.length),
-    'lowest-price': formatTaka(lowestCoursePrice),
+    'lowest-price': formatTaka(offer.lowestCoursePrice(COURSES)),
     phone: CONTACT.phone,
   };
+  const ariaLabels = {
+    'copy-coupon': labels.copyCouponAria,
+    'coupon-field': labels.couponFieldAria,
+  };
+
+  document.documentElement.classList.toggle('offer-ended', offer.status === 'ended');
 
   document.querySelectorAll('[data-bind]').forEach((el) => {
     const key = el.dataset.bind;
-    if (key in values) el.textContent = values[key];
+    if (key in texts) el.textContent = texts[key];
     if (key.startsWith('phone')) {
       const link = el.tagName === 'A' ? el : el.closest('a');
       if (link) link.setAttribute('href', CONTACT.phoneHref);
     }
+  });
+
+  document.querySelectorAll('[data-bind-label]').forEach((el) => {
+    const key = el.dataset.bindLabel;
+    if (key in ariaLabels) el.setAttribute('aria-label', ariaLabels[key]);
   });
 }

@@ -63,6 +63,8 @@
   /* layout */
   --container: 70rem;
   --gutter: 1rem;
+  --offer-bar-min: 3.25rem;
+  /* No-JS fallbacks for the sticky stack. shop.js measures both and overrides them on <html>. */
   --offer-bar-h: 3.25rem;
   --shop-bar-h: 4.25rem;
   --tap: 2.75rem;

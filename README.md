@@ -11,16 +11,20 @@ index.html              the page (copy lives here)
 _headers                security + cache headers (Cloudflare Pages / Netlify format)
 assets/css/             styles (fonts.css declares the self-hosted fonts)
 assets/fonts/           self-hosted font files (woff2)
-assets/js/config.js     coupon, offer end time, phone, tracking IDs, link allowlists
+assets/js/config.js     offer (coupon, deadline, percents), phone, tracking IDs, link allowlists
+assets/js/offer.js      the Offer module: status, time left, coupon prices, offer text (pure)
+tests/                  node:test tests for the Offer module and the index.html meta text
+GLOSSARY.md             the page's domain words (Offer, Coupon code, Offer deadline ...)
 assets/js/catalog.js    every course, book and category
 assets/js/tracking.js   Meta Pixel / GTM loader and click events
-assets/js/*.js          rendering, links, countdown, coupon copy, shop tabs (tabs.js), chip filters
+assets/js/*.js          rendering, links, countdown, coupon copy, the shop tabs and chip filters (shop.js)
+tests/shop.test.js     run: node --test tests/shop.test.js
 assets/img/courses/     course banners: <id>-400.webp and <id>-800.webp
 assets/img/books/       book covers: <id>.webp, 260x372
 deploy/nginx.conf       nginx location blocks
 deploy/nginx-security-headers.conf  shared headers, included by nginx.conf
 deploy/apache.htaccess  same headers for Apache / cPanel
-scripts/                make-image.py (course banners and book covers)
+scripts/                make-image.py (course banners, book covers, og-cover.jpg)
 _source/                original JPEGs, local only (git-ignored, do not upload)
 PRODUCT.md              design context for the page (not uploaded)
 .editorconfig .gitignore  editor and git settings
@@ -30,7 +34,7 @@ PRODUCT.md              design context for the page (not uploaded)
 
 | I want to... | Edit |
 | --- | --- |
-| Change the coupon code, discount percentages or offer end time | `assets/js/config.js` (`OFFER`). `endsAt` is ISO time with the +06:00 Bangladesh offset. `bookDiscountPercent` with `bookDiscountIsMax: true` prints "২০% পর্যন্ত" (up to 20%); set it to `false` for a flat rate. Every number on the page reads from here, so nothing else needs editing. The static fallback text in `index.html` (title, meta, OG tags) is typed by hand and must be changed too. `assets/img/og-cover.jpg` is a picture, so regenerate it if the numbers change. |
+| Change the coupon code, discount percentages or offer end time | `assets/js/config.js` (`OFFER`: `couponCode`, `endsAt`, `courses.percent`, `books.percent`, `books.upTo`). `endsAt` is ISO time with the +06:00 Bangladesh offset, for example `'2026-11-03T19:00:00+06:00'`. `books: { percent: 20, upTo: true }` prints "২০% পর্যন্ত" (up to 20%); set `upTo: false` for a flat rate. Every number on the page reads from here through `offer.js`. The campaign checklist at the top of `config.js` lists the spots typed by hand: `<title>`, meta description, `og:description` and `twitter:description` in `index.html` (`node --test` fails if they drift from `OFFER`), plus the share picture, which you redraw with `python scripts/make-image.py og`. |
 | Change the phone number | `assets/js/config.js` (`CONTACT`) |
 | Add, remove, reorder or edit a course or book | `assets/js/catalog.js`, plus the banner image for a course or the cover image for a book (below) |
 | Change headlines, text, button labels | `index.html` |
@@ -45,7 +49,17 @@ The two hero tiles each show a fan of three pictures. Which ones is set by `FEAT
 
 Every outbound link opens in a new tab. This is set in one place, `setExternalLink()` in `assets/js/links.js`.
 
-When the offer ends (`OFFER.endsAt` passes), the page adds `offer-ended` to `<html>`. The countdown, ticket, coupon prices and book tags hide and the offer bar says the offer is over. To test it, set `endsAt` to a past date, look, then set it back.
+When the offer ends (`OFFER.endsAt` passes), `bind.js` adds `offer-ended` to `<html>`, live, without a reload. The countdown, ticket, coupon prices and book tags hide and the offer bar says the offer is over. That text is in `index.html`; `offer.js` only reports the status (`running` or `ended`). An `endsAt` that cannot be read counts as ended, so a typo never shows a false discount. To test it, set `endsAt` to a past date, look, then set it back.
+
+`offer.js` is pure: `getOffer(OFFER, now)` takes the time as an argument and never reads the clock. `bind.js` is its only DOM adapter: it writes every `data-bind` text and `data-bind-label` screen-reader label (aria-labels that mention the coupon code) from it. To show offer text in a new place, add a label in `offer.js` and a `data-bind` or `data-bind-label` attribute in `index.html`.
+
+### Tests
+
+`node --test` runs the tests in `tests/` (Node 20 or newer, nothing to install). `offer.test.js` checks the Offer module: status at the deadline, time left, coupon prices, labels. `meta.test.js` fails unless the `<title>` and the meta, `og:` and `twitter:` descriptions in `index.html` carry the current coupon code, course percent and book percent from `config.js`.
+
+### Share picture
+
+`python scripts/make-image.py og` redraws `assets/img/og-cover.jpg` (needs pillow) from the coupon code and percents in `config.js`. The text is English, because PIL cannot shape Bangla. It fails loudly if it cannot read `OFFER`. It uses Windows fonts (Impact, Arial Bold); on another system change the font paths at the top of the script. Use a new file name if the old picture is cached by Facebook.
 
 ### Course banner images
 

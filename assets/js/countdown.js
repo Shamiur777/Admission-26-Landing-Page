@@ -1,15 +1,16 @@
 import { padBangla } from './format.js';
+import { getOffer } from './offer.js';
 
 /**
- * Runs a live countdown to `endsAt`. The root needs children with
- * data-unit="days|hours|minutes|seconds". When time is up the root is hidden.
+ * Runs a live countdown. The numbers come from getOffer(); this module only ticks
+ * and writes them. The root needs children with data-unit="days|hours|minutes|seconds".
+ * When the offer has ended the root is hidden and `onExpire` is called once.
  * @param {HTMLElement} root
- * @param {string} endsAt ISO date with offset
+ * @param {import('./offer.js').OfferConfig} offerConfig
  * @param {() => void} [onExpire]
  * @returns {() => void} stop function
  */
-export function initCountdown(root, endsAt, onExpire) {
-  const end = Date.parse(endsAt);
+export function initCountdown(root, offerConfig, onExpire) {
   const cells = {};
   root.querySelectorAll('[data-unit]').forEach((el) => {
     cells[el.dataset.unit] = el;
@@ -19,22 +20,15 @@ export function initCountdown(root, endsAt, onExpire) {
   const stop = () => window.clearInterval(timer);
 
   function tick() {
-    const left = end - Date.now();
-    if (Number.isNaN(end) || left <= 0) {
+    const { status, timeLeft } = getOffer(offerConfig, Date.now());
+    if (status === 'ended') {
       stop();
       root.hidden = true;
       if (onExpire) onExpire();
       return;
     }
-    const total = Math.floor(left / 1000);
-    const parts = {
-      days: Math.floor(total / 86400),
-      hours: Math.floor((total % 86400) / 3600),
-      minutes: Math.floor((total % 3600) / 60),
-      seconds: total % 60,
-    };
-    for (const key of Object.keys(parts)) {
-      if (cells[key]) cells[key].textContent = padBangla(parts[key]);
+    for (const key of ['days', 'hours', 'minutes', 'seconds']) {
+      if (cells[key]) cells[key].textContent = padBangla(timeLeft[key]);
     }
   }
 
