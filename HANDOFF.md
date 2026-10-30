@@ -11,7 +11,7 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - Meta Pixel ID and GTM ID are not set yet. Tracking is off until the owner supplies them.
 - Playbook alignment is done for everything that applies to a static page: docs, headers, CSP guard test, validator, allowlist staging (`dist/`), live probe script, CI, and one audit loop (see the log).
 - The final URL path on the main domain is not confirmed.
-- All work is committed and pushed. 62 tests pass (`node --test`).
+- All work is committed and pushed. 63 tests pass (`node --test`).
 - Confirmed by the owner (2026-10-31): REVENGE gives the book discount on Rokomari.
 
 ## Decisions made
@@ -78,6 +78,7 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - Rejected from the council: English digits for percentages (owner rule), and moving live links down (owner request).
 - Left for the owner: per-course Bangla descriptions, and a real Android test in the Facebook browser.
 - Accent colour changed from saffron to Hulkenstein green #01AD01 (sampled from the logo) at the owner's request. Tokens are `--color-green*`. Ink text on green is 6.28:1. Green is never used as text on a light background. Share image redrawn. Browser-tab icon is the Hulkenstein arms-and-brain mark.
+- Focused security review of 65f3099..HEAD (differential-review, sharp-edges, fp-check, manual secrets sweep of tracked files plus a git-history pattern scan): 5 candidates, all false positive. No innerHTML or other HTML sinks; CSP identical in 4 places; new static outbound links are constant https with noopener noreferrer; the staged folder holds only allowed files. Added a test pinning `ALLOWED_FILES` to the font licence. Not run: the ghost-scan-secrets binary (manual sweep instead).
 
 ## Playbook section 16 checklist (static page)
 
