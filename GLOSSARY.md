@@ -23,3 +23,11 @@ _Avoid_: sale price, discounted price
 **Up-to discount** ("পর্যন্ত"):
 A book discount that is a ceiling: the coupon gives at most the stated percent, not always that much. Printed as "২০% পর্যন্ত".
 _Avoid_: max discount, flat discount (a flat discount is the opposite)
+
+**Event kind**:
+One of the page actions reported to ad tags: a course click, a book click, a live-channel click, or a coupon copy. Each has a Meta event name the owner can change.
+_Avoid_: event type, action
+
+**Card**:
+One catalog item's tile in the page: a course, a book or a free-live channel, with its outbound link.
+_Avoid_: tile, item box

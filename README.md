@@ -16,9 +16,12 @@ assets/js/offer.js      the Offer module: status, time left, coupon prices, offe
 tests/                  node:test tests for the Offer module and the index.html meta text
 GLOSSARY.md             the page's domain words (Offer, Coupon code, Offer deadline ...)
 assets/js/catalog.js    every course, book and category
-assets/js/tracking.js   Meta Pixel / GTM loader and click events
+assets/js/tracking.js   Meta Pixel / GTM loader, the table of event kinds (EVENTS), click events
+assets/js/cards.js      course, book and live cards: template contract, link, images, click tag
+assets/js/render.js     chips, hero fan, and the loops that skip any item with an unsafe link
+assets/js/links.js      buildLink(): pure link check + UTM pass-through
 assets/js/*.js          rendering, links, countdown, coupon copy, the shop tabs and chip filters (shop.js)
-tests/shop.test.js     run: node --test tests/shop.test.js
+tests/*.test.js        run: node --test
 assets/img/courses/     course banners: <id>-400.webp and <id>-800.webp
 assets/img/books/       book covers: <id>.webp, 260x372
 deploy/nginx.conf       nginx location blocks
@@ -47,7 +50,7 @@ The page runs top to bottom as: offer bar, hero, free live classes, shop, how to
 
 The two hero tiles each show a fan of three pictures. Which ones is set by `FEATURED` at the bottom of `catalog.js` (item ids; the middle one sits in front).
 
-Every outbound link opens in a new tab. This is set in one place, `setExternalLink()` in `assets/js/links.js`.
+Every outbound link opens in a new tab. This is set in one place, `setLink()` in `assets/js/cards.js`; `buildLink()` in `assets/js/links.js` vets the URL first.
 
 When the offer ends (`OFFER.endsAt` passes), `bind.js` adds `offer-ended` to `<html>`, live, without a reload. The countdown, ticket, coupon prices and book tags hide and the offer bar says the offer is over. That text is in `index.html`; `offer.js` only reports the status (`running` or `ended`). An `endsAt` that cannot be read counts as ended, so a typo never shows a false discount. To test it, set `endsAt` to a past date, look, then set it back.
 
@@ -107,7 +110,7 @@ Leave a value empty to turn that tag off. A badly formatted ID is ignored, and t
 
 Events fire on click and never delay the click. Meta usually sends them with `sendBeacon`, so they complete even as the browser leaves the page.
 
-`render.js` marks each outbound link with `data-track="courseClick|bookClick|liveClick"` plus `data-track-id`, `data-track-name` and `data-track-category`. One delegated listener (`initClickTracking` in `tracking.js`) reads those attributes. To track a new link, add those attributes. The pixel loads with `autoConfig` off, so Meta does not scrape button text. In Meta Events Manager, also turn off Automatic Advanced Matching unless you want it.
+`cards.js` marks each outbound link through `tagLink()` in `tracking.js`, which sets `data-track="courseClick|bookClick|liveClick"` plus `data-track-id`, `data-track-name` and `data-track-category`. One delegated listener (`initClickTracking`) reads those attributes. To track a new kind of link, add a row to the `EVENTS` table in `tracking.js` (and its Meta event name to `TRACKING.events`). `window.fbq` and `dataLayer` sit behind an adapter (`browserAdapter`), so tests run against a recording fake. The pixel loads with `autoConfig` off, so Meta does not scrape button text. In Meta Events Manager, also turn off Automatic Advanced Matching unless you want it.
 
 | Action on the page | `kind` | Default Meta event | GTM `dataLayer` event |
 | --- | --- | --- | --- |

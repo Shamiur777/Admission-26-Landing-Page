@@ -6,12 +6,15 @@
 # HSTS is deliberately not set here: it is a domain-wide policy for the site owner.
 
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self'; font-src 'self'; img-src 'self' https://www.facebook.com https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; base-uri 'self'; form-action 'none'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self'; font-src 'self'; img-src 'self' https://www.facebook.com https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), usb=(), interest-cohort=(), browsing-topics=()
+  Permissions-Policy: accelerometer=(), autoplay=(), browsing-topics=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), usb=(), interest-cohort=()
   Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-site
+  X-Permitted-Cross-Domain-Policies: none
+  ! Access-Control-Allow-Origin
 
 # Cache rules are listed per path, not under /*, because Cloudflare and Netlify merge
 # duplicate headers from every matching rule instead of overriding them.
@@ -30,3 +33,7 @@
   Cache-Control: public, max-age=300
 /assets/css/*
   Cache-Control: public, max-age=300
+
+# Preview deployments must not be indexed. The first rule matches only *.pages.dev hosts.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex

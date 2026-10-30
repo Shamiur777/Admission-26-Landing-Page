@@ -11,7 +11,8 @@ course  writes assets/img/courses/<id>-400.webp and -800.webp (square banner;
 book    writes assets/img/books/<id>.webp at 260x372 (centre-cropped to fit).
 og      redraws assets/img/og-cover.jpg (1200x630) from the coupon code and
         percents in assets/js/config.js. English text only (PIL cannot shape Bangla).
-        Uses Windows fonts (Impact, Arial Bold); on another OS edit OG_FONTS below.
+        Needs Impact/Arial Bold (Windows), Arial Black/Arial (macOS) or DejaVu Sans (Linux);
+        edit OG_FONTS below to use others.
 """
 import re
 import sys
@@ -23,7 +24,16 @@ IMG_DIR = Path(__file__).resolve().parent.parent / "assets" / "img"
 COURSE_SIZES = (400, 800)
 BOOK_SIZE = (260, 372)
 CONFIG_JS = Path(__file__).resolve().parent.parent / "assets" / "js" / "config.js"
-OG_FONTS = {"display": "C:/Windows/Fonts/impact.ttf", "bold": "C:/Windows/Fonts/arialbd.ttf", "regular": "C:/Windows/Fonts/arial.ttf"}
+# Candidate font files per role, tried in order: Windows, macOS, Linux (DejaVu).
+OG_FONTS = {
+    "display": ["C:/Windows/Fonts/impact.ttf", "/System/Library/Fonts/Supplemental/Impact.ttf",
+                "/Library/Fonts/Arial Black.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+                "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf"],
+    "bold": ["C:/Windows/Fonts/arialbd.ttf", "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
+             "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf"],
+    "regular": ["C:/Windows/Fonts/arial.ttf", "/System/Library/Fonts/Supplemental/Arial.ttf",
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", "/usr/share/fonts/dejavu/DejaVuSans.ttf"],
+}
 ORANGE, ORANGE_DEEP, GREEN, INK, WHITE, GREY = "#F26B1D", "#B4380A", "#1C7A3E", "#12130E", "#FFFFFF", "#44463F"
 
 
@@ -74,7 +84,13 @@ def read_offer() -> dict:
 
 def save_og() -> None:
     offer = read_offer()
-    font = lambda name, size: ImageFont.truetype(OG_FONTS[name], size)
+    paths = {}
+    for role, candidates in OG_FONTS.items():
+        paths[role] = next((c for c in candidates if Path(c).is_file()), None)
+        if paths[role] is None:
+            tried = "\n  ".join(candidates)
+            sys.exit(f"og: no {role} font found. Tried:\n  {tried}\nInstall one or add a path to OG_FONTS in this script.")
+    font = lambda name, size: ImageFont.truetype(paths[name], size)
     img = Image.new("RGB", (1200, 630), ORANGE)
     d = ImageDraw.Draw(img)
 

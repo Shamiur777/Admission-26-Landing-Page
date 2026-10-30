@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self'; font-src 'self'; img-src 'self' https://www.facebook.com https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; base-uri 'self'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self'; font-src 'self'; img-src 'self' https://www.facebook.com https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Admission 2026: কোর্সে ৪০%, বইয়ে ২০% পর্যন্ত ছাড়, কুপন REVENGE</title>
   <meta name="description" content="Hulkenstein-এর অ্যাডমিশন কোর্সে ৪০% এবং QNA Publication-এর বইয়ে ২০% পর্যন্ত ছাড়। কুপন কোড REVENGE, ৭২ ঘণ্টার অফার। ফ্রি লাইভ ক্লাসও আছে।">
@@ -38,6 +38,7 @@
   <link rel="modulepreload" href="assets/js/bind.js">
   <link rel="modulepreload" href="assets/js/render.js">
   <link rel="modulepreload" href="assets/js/links.js">
+  <link rel="modulepreload" href="assets/js/cards.js">
   <link rel="modulepreload" href="assets/js/format.js">
   <link rel="modulepreload" href="assets/js/shop.js">
   <link rel="modulepreload" href="assets/js/countdown.js">
@@ -326,6 +327,11 @@
       <p class="site-footer__line">
         <a class="site-footer__link" href="https://edgecoursebd.com" target="_blank" rel="noopener noreferrer">edgecoursebd.com</a>
       </p>
+      <p class="site-footer__line site-footer__policies">
+        <a class="site-footer__link" href="https://edgecoursebd.com/content/privacy-policy" target="_blank" rel="noopener noreferrer">প্রাইভেসি পলিসি</a>
+        <a class="site-footer__link" href="https://edgecoursebd.com/content/terms-and-conditions" target="_blank" rel="noopener noreferrer">শর্তাবলি</a>
+        <a class="site-footer__link" href="https://edgecoursebd.com/content/refund-policy" target="_blank" rel="noopener noreferrer">রিফান্ড পলিসি</a>
+      </p>
       <p class="site-footer__copy">© ২০২৬ Edge Course</p>
     </div>
   </footer>
@@ -362,7 +368,7 @@
 
   <template id="tpl-course">
     <article class="course-card">
-      <img class="course-card__image" data-part="image" data-src="banner" width="400" height="400" alt="" decoding="async">
+      <img class="course-card__image" data-part="image" width="400" height="400" alt="" decoding="async">
       <div class="course-card__body">
         <p class="course-card__category" data-part="category"></p>
         <h3 class="course-card__title" data-part="title"></h3>
@@ -382,7 +388,7 @@
 
   <template id="tpl-book">
     <article class="book-card">
-      <img class="book-card__cover" data-part="cover" data-src="cover" width="260" height="372" alt="" decoding="async">
+      <img class="book-card__cover" data-part="cover" width="260" height="372" alt="" decoding="async">
       <div class="book-card__body">
         <h3 class="book-card__title" data-part="title"></h3>
         <p class="book-card__tag offer-live"><span data-part="coupon-code"></span> কুপনে <b data-part="discount"></b></p>
@@ -404,7 +410,7 @@
   </template>
 
   <template id="tpl-fan">
-    <img class="fan__item" data-src="cover" alt="" decoding="async">
+    <img class="fan__item" alt="" width="64" height="64" decoding="async">
   </template>
 </body>
 </html>

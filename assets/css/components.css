@@ -590,6 +590,7 @@
 .site-footer__brand { font-family: var(--font-display); font-weight: 800; font-size: var(--text-l); margin-bottom: var(--space-3); }
 .site-footer__line { display: block; }
 .site-footer__link { display: inline-flex; align-items: center; min-height: var(--tap); }
+.site-footer__policies { display: flex; flex-wrap: wrap; column-gap: var(--space-4); }
 .site-footer__copy { margin-top: var(--space-3); font-size: var(--text-s); color: var(--color-on-ink-soft); }
 .site-footer :focus-visible { outline-color: var(--color-on-ink); }
 

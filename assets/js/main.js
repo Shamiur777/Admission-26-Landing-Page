@@ -39,11 +39,7 @@ function start() {
     code: OFFER.couponCode,
     status: $('#copy-status'),
     toast: $('#copy-toast'),
-    onCopy: () => track('couponCopy', {
-      content_name: OFFER.couponCode,
-      content_category: 'coupon',
-      content_ids: [OFFER.couponCode],
-    }),
+    onCopy: () => track('couponCopy', { code: OFFER.couponCode }),
   });
   initStickyBar({ bar: $('#sticky-bar'), hero: $('#hero'), shop: $('#shop'), footer: $('#site-footer') });
   initClickTracking();
