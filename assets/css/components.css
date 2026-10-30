@@ -416,7 +416,7 @@
   color: var(--color-on-ink);
 }
 .proof__note { position: relative; z-index: 1; margin-bottom: var(--space-3); font-size: var(--text-s); color: var(--color-on-ink-soft); }
-.proof__list { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+.proof__list { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
 .proof__item { font-size: var(--text-xs); line-height: 1.35; }
 .proof__item b { display: block; font-weight: 700; font-size: clamp(1.125rem, 5.2vw, 1.5rem); line-height: 1.15; color: var(--color-green); }
 
@@ -429,6 +429,7 @@
 @media (min-width: 600px) {
   .grid--courses { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
   .grid--books { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+  .proof__list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .proof__item { font-size: var(--text-s); }
 }
 @media (min-width: 960px) {
