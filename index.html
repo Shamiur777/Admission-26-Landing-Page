@@ -231,7 +231,7 @@
           <h2 class="section__title" id="live-title">ফ্রি গাইডলাইন লাইভ, আগে দেখে নাও</h2>
           <p class="section__lead">নিচের পেজ, চ্যানেল আর গ্রুপে ফ্রি গাইডলাইন লাইভ পাবে।</p>
         </div>
-        <ul class="live-grid" id="live-list"></ul>
+        <ul class="live-grid" id="live-list" data-grid></ul>
       </div>
       <svg class="edge edge--to-paper" viewBox="0 0 360 20" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#e-torn"/></svg>
     </section>
@@ -266,7 +266,7 @@
         </div>
         <div class="panel" role="tabpanel" id="panel-courses" data-panel="courses" aria-labelledby="tab-courses">
           <p class="visually-hidden" id="course-status" role="status" data-status data-status-template="{n}টি কোর্স দেখাচ্ছে"></p>
-          <div class="grid grid--courses" id="course-grid" data-items>
+          <div class="grid grid--courses" id="course-grid" data-items data-grid>
             <a class="list-prompt" href="#books" data-prompt>
               <span>QNA-র <span data-bind="book-count">১৮</span>টি বইও আছে</span>
               <span class="list-prompt__go">বই দেখো <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span>
@@ -296,7 +296,7 @@
             </ul>
           </div>
           <p class="visually-hidden" id="book-status" role="status" data-status data-status-template="{n}টি বই দেখাচ্ছে"></p>
-          <div class="grid grid--books" id="book-grid" data-items>
+          <div class="grid grid--books" id="book-grid" data-items data-grid>
             <a class="list-prompt" href="#courses" data-prompt>
               <span><span data-bind="course-count">২৪</span>টি কোর্সও আছে</span>
               <span class="list-prompt__go">কোর্স দেখো <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span>

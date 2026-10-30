@@ -24,15 +24,17 @@
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Code and HTML are edited without renaming files (no hashed names): 5-minute cache.
+# Code and HTML are edited without renaming files (no hashed names). no-cache means the browser
+# revalidates every time (cheap 304 with ETag/Last-Modified), so a returning visitor can never
+# load a mix of old and new ES modules after a deploy.
 /
-  Cache-Control: public, max-age=300
+  Cache-Control: no-cache
 /index.html
-  Cache-Control: public, max-age=300
+  Cache-Control: no-cache
 /assets/js/*
-  Cache-Control: public, max-age=300
+  Cache-Control: no-cache
 /assets/css/*
-  Cache-Control: public, max-age=300
+  Cache-Control: no-cache
 
 # Preview deployments must not be indexed. The first rule matches only *.pages.dev hosts.
 https://:project.pages.dev/*

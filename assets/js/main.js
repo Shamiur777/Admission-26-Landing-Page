@@ -33,7 +33,7 @@ function start() {
   document.querySelectorAll('[data-fan="courses"]').forEach((el) => renderFan(el, $('#tpl-fan'), pick(COURSES, FEATURED.courses), 'courses'));
   document.querySelectorAll('[data-fan="books"]').forEach((el) => renderFan(el, $('#tpl-fan'), pick(BOOKS, FEATURED.books), 'books'));
   renderLive($('#live-list'), $('#tpl-live'), LIVE_CHANNELS);
-  document.querySelectorAll('.grid, .live-grid').forEach((el) => el.setAttribute('data-ready', ''));
+  document.querySelectorAll('[data-grid]').forEach((el) => el.setAttribute('data-ready', ''));
 
   initShop({ shop: $('#shop'), offerBar: $('#offer-bar') });
 

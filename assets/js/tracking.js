@@ -14,9 +14,9 @@
  */
 import { TRACKING } from './config.js';
 
-const PIXEL_ID_RE = /^\d{10,20}$/;
-const GTM_ID_RE = /^GTM-[A-Z0-9]{4,10}$/;
-const EVENT_NAME_RE = /^[A-Za-z][A-Za-z0-9_]{0,49}$/;
+export const PIXEL_ID_RE = /^\d{10,20}$/;
+export const GTM_ID_RE = /^GTM-[A-Z0-9]{4,10}$/;
+export const EVENT_NAME_RE = /^[A-Za-z][A-Za-z0-9_]{0,49}$/;
 const META_STANDARD = new Set([
   'InitiateCheckout', 'ViewContent', 'Lead', 'Contact',
   'AddToCart', 'Purchase', 'CompleteRegistration', 'Search',

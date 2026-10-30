@@ -46,6 +46,29 @@ PRODUCT.md              design context for the page (not uploaded)
 | Link to a new website | Add its host to `ALLOWED_LINK_HOSTS` in `config.js`, or the link will not render |
 | Pass UTM/fbclid to another host | Add it to `ATTRIBUTION_HOSTS` in `config.js` |
 
+### Safe to change / change with care
+
+Developers can edit freely in the first group. The second group is wired to other files; change one side and the test named here fails, with the file and item to fix.
+
+| Safe to change (plain data) | What to know |
+| --- | --- |
+| `assets/js/config.js` | Offer, phone, tracking IDs. `tests/contract.test.js` (contract 6) checks the format: coupon code A-Z0-9, `endsAt` with `+06:00` or `Z`, phone digits match `phoneHref`, tracking IDs. `tests/meta.test.js` checks the hand-typed meta text. |
+| `assets/js/catalog.js` | Courses, books, categories, `FEATURED`. Contract 5 checks unique ids, categories, FEATURED ids, link hosts, prices; `scripts/validate.mjs` checks the images exist. |
+| Copy in `index.html` | Edit text freely. Keep the `data-*` attributes and ids. |
+| `assets/css/tokens.css` | Colours, type, space. Contract 4 fails on a `var(--x)` with no definition and on a hex colour outside this file. |
+
+| Change with care (wired together) | Guarded by |
+| --- | --- |
+| `<template id="tpl-…">` in `index.html` and `cards.js` (`data-part` names) | Contract 2 in `tests/contract.test.js` |
+| `data-bind` / `data-bind-label` in `index.html` and `bindTables()` in `bind.js` | Contract 3 |
+| Ids and `data-*` hooks in `index.html` and the lookups in `shop.js`, `main.js`, `coupon.js`, `countdown.js`, `render.js`, `tracking.js` | Contract 1. Contract 9 fails if JS finds an element by a CSS class: use a `data-` hook |
+| Outbound links in `index.html` (`target`, `rel`) | Contract 7 |
+| CSP in `index.html`, `_headers`, `deploy/nginx-security-headers.conf`, `deploy/apache.htaccess` | `tests/headers.test.js` |
+| Cache rules in `_headers`, `deploy/nginx.conf`, `deploy/apache.htaccess` | `tests/headers.test.js` (html, js, css `no-cache`; images and fonts immutable) |
+| Files allowed in `assets/`, missing images, inline script or style | `scripts/validate.mjs` (run by `tests/validate.test.js`) |
+
+When a lookup targets an element that JS builds itself (not in `index.html`), add it to `CREATED_BY_JS` in `tests/contract.test.js` with the reason.
+
 ### Deadline in words, prompts and copy messages
 
 `offer.js` turns `endsAt` into a Bangla label in Bangladesh time (`deadlineLabel()`, exposed as `labels.deadline`), for example "৩ নভেম্বর, সন্ধ্যা ৭টা". It shows under the coupon slip and in the top bar, and follows `endsAt` with no other edit. Each list has a slim prompt after its sixth card ("QNA-র ১৮টি বইও আছে" in the courses list, "২৪টি কোর্সও আছে" in the books list). The prompts are `[data-prompt]` links in `index.html`; `render.js` places them after the sixth card (`promptIndex()` decides the position, tested in `tests/render.test.js`) and `shop.js` does not count them as cards. After a coupon copy tap the page shows a message for 3 seconds (`labels.copied`, or `labels.copyFailed` with the code if the browser blocks the clipboard; both live in `offer.js`, and `copyFeedback()` in `coupon.js` picks between them, tested in `tests/coupon.test.js`) and selects the code text so a long-press can copy it.
@@ -72,7 +95,7 @@ When the offer ends (`OFFER.endsAt` passes), `bind.js` adds `offer-ended` to `<h
 
 ### Tests
 
-`node --test` runs the tests in `tests/` (Node 20 or newer, nothing to install). `offer.test.js` checks the Offer module: status at the deadline, time left, coupon prices, labels. `meta.test.js` fails unless the `<title>` and the meta, `og:` and `twitter:` descriptions in `index.html` carry the current coupon code, course percent and book percent from `config.js`.
+`node --test` runs the tests in `tests/` (Node 20 or newer, nothing to install). `offer.test.js` checks the Offer module: status at the deadline, time left, coupon prices, labels. `contract.test.js` checks the couplings between `index.html`, the JS, the CSS, the catalog and the config (see the table above). `meta.test.js` fails unless the `<title>` and the meta, `og:` and `twitter:` descriptions in `index.html` carry the current coupon code, course percent and book percent from `config.js`.
 
 ### Share picture
 
@@ -171,7 +194,7 @@ The page is a folder of static files. Put it at `https://edgecoursebd.com/admiss
 - Check the live URL with `?utm_source=test`, for example `https://edgecoursebd.com/admission26/?utm_source=test`. Click a course and confirm the outbound URL carries `utm_source=test`.
 - Do not deploy over the main site's own `.htaccess`, `_headers` or nginx config. These headers belong to this folder only. If the main site already sets its own CSP, check that the page's policy is the one the browser receives.
 
-**Cache:** html, js and css are cached for 5 minutes. File names have no hash, so a short cache makes edits show up quickly. Images and fonts are cached for a year, which is why a changed image needs a new name.
+**Cache:** html, js and css are sent with `Cache-Control: no-cache`. File names have no hash, so the browser asks the server every time and gets a cheap 304 (via ETag or Last-Modified) when nothing changed. A returning visitor can then never load a mix of old and new ES modules after a deploy. Images and fonts are cached for a year, which is why a changed image needs a new name. `tests/headers.test.js` checks this in `_headers`, `deploy/nginx.conf` and `deploy/apache.htaccess`.
 
 **Local preview:** ES modules do not run from `file://`. From the project folder run `npx serve .` and open the address it prints.
 
@@ -190,7 +213,7 @@ If edgecoursebd.com is behind Cloudflare:
 - Turn on Always Use HTTPS. Set HSTS at the domain level, deliberately, as the site owner. This folder does not set it, because a subfolder must not decide a domain-wide policy.
 - Keep WAF managed rules on.
 - Be careful with Bot Fight Mode and Super Bot Fight Mode. They can challenge real people arriving from Meta's in-app browser and waste ad spend. Test from a phone on mobile data first, and use a rule that skips the challenge for `/admission26/*` if needed.
-- Do not cache HTML for long at the edge. Respect the 5-minute headers above.
+- Do not cache HTML, JS or CSS at the edge without revalidation. Respect the `no-cache` headers above.
 - After a deploy, purge the cache for the changed files.
 
 ## Pre-launch checklist

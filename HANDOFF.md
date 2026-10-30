@@ -11,7 +11,7 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - Meta Pixel ID and GTM ID are not set yet. Tracking is off until the owner supplies them.
 - Playbook alignment is done for everything that applies to a static page: docs, headers, CSP guard test, validator, allowlist staging (`dist/`), live probe script, CI, and one audit loop (see the log).
 - The final URL path on the main domain is not confirmed.
-- All work is committed and pushed. 63 tests pass (`node --test`).
+- All work is committed and pushed. 103 tests pass (`node --test`).
 - Confirmed by the owner (2026-10-31): REVENGE gives the book discount on Rokomari.
 
 ## Decisions made
@@ -79,6 +79,7 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - Left for the owner: per-course Bangla descriptions, and a real Android test in the Facebook browser.
 - Accent colour changed from saffron to Hulkenstein green #01AD01 (sampled from the logo) at the owner's request. Tokens are `--color-green*`. Ink text on green is 6.28:1. Green is never used as text on a light background. Share image redrawn. Browser-tab icon is the Hulkenstein arms-and-brain mark.
 - Focused security review of 65f3099..HEAD (differential-review, sharp-edges, fp-check, manual secrets sweep of tracked files plus a git-history pattern scan): 5 candidates, all false positive. No innerHTML or other HTML sinks; CSP identical in 4 places; new static outbound links are constant https with noopener noreferrer; the staged folder holds only allowed files. Added a test pinning `ALLOWED_FILES` to the font licence. Not run: the ghost-scan-secrets binary (manual sweep instead).
+- Change safety: `tests/contract.test.js` checks every link between files (JS selectors to HTML, templates to cards.js, data-bind keys, CSS variables, catalog, config, outbound links, data- hooks). html, js and css are now `Cache-Control: no-cache`, so a returning visitor never mixes old and new modules after a deploy. README has a "Safe to change / change with care" table. 103 tests.
 
 ## Playbook section 16 checklist (static page)
 
@@ -122,7 +123,7 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 ### Static site
 - [x] Allowlist deploy from a temp folder (`scripts/stage.mjs` builds `dist/`)
 - [x] Validator (`scripts/validate.mjs`, also run in CI)
-- [ ] Hashed `?v=` on CSS and JS (not done; files cache for 5 minutes instead)
+- [ ] Hashed `?v=` on CSS and JS (not done; html, js and css are sent with `Cache-Control: no-cache` instead, so they revalidate every time)
 - [x] No `_redirects` file; no inline scripts; works with scripting off for the main links (verify before release)
 - N/A Turnstile and forms: no forms.
 

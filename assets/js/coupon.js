@@ -61,7 +61,7 @@ export async function copyText(text) {
  * @param {string} code
  */
 function selectCodeOnPage(code) {
-  const el = Array.from(document.querySelectorAll('.ticket__code, [data-bind="coupon"]')).find((e) => e.offsetParent !== null && e.textContent.trim() === code);
+  const el = Array.from(document.querySelectorAll('[data-bind="coupon"]')).find((e) => e.offsetParent !== null && e.textContent.trim() === code);
   const selection = window.getSelection && window.getSelection();
   if (!el || !selection) return;
   const range = document.createRange();

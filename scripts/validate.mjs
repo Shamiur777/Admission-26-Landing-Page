@@ -21,7 +21,7 @@ export function walk(dir) {
   return out;
 }
 
-function parseTags(html) {
+export function parseTags(html) {
   const clean = html.replace(/<!--[\s\S]*?-->/g, '');
   const tags = [];
   const tagRe = /<([a-zA-Z][a-zA-Z0-9-]*)((?:\s+[^\s=/>"']+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?)*)\s*\/?>/g;

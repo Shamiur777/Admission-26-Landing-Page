@@ -89,3 +89,68 @@ test('all Permissions-Policy copies are identical and deny-all', () => {
   assert.equal(pp[2], pp[0]);
   for (const item of pp[0].split(',')) assert.match(item.trim(), /^[a-z-]+=\(\)$/);
 });
+
+// ---- Cache rules --------------------------------------------------------------------------
+// html, js and css have no hashed names, so they must revalidate every time (no-cache).
+// A time-based cache lets a returning visitor load a mix of old and new ES modules after a deploy.
+// Images and fonts get a new file name when they change, so they are cached for a year.
+const nginxConf = read('deploy/nginx.conf');
+const noComments = (text) => text.replace(/^\s*#.*$/gm, '');
+const cacheValues = (text) => [...noComments(text).matchAll(/Cache-Control[:\s]+"?([^"\n]+?)"?\s*(?:always;)?\s*$/gim)].map((m) => m[1].trim());
+
+/** Cache-Control of one _headers path rule, e.g. '/assets/js/*'. */
+function headersRule(path) {
+  const lines = files['_headers'].split('\n');
+  const start = lines.findIndex((l) => l.trim() === path && !l.startsWith(' '));
+  assert.ok(start >= 0, `_headers has no rule for path '${path}'`);
+  const body = [];
+  for (let i = start + 1; i < lines.length && /^\s+\S/.test(lines[i]); i += 1) body.push(lines[i]);
+  return cacheValues(body.join('\n'));
+}
+
+/** The text of one nginx `location ... { }` block, found by its exact header text. */
+function nginxBlock(header) {
+  const at = nginxConf.indexOf(header);
+  assert.ok(at >= 0, `deploy/nginx.conf has no '${header}' block`);
+  return nginxConf.slice(at, nginxConf.indexOf('\n}', at));
+}
+
+/** The text of the Apache <FilesMatch> block whose pattern contains `ext`. */
+function apacheBlock(ext) {
+  const m = files['deploy/apache.htaccess'].match(new RegExp(String.raw`<FilesMatch "[^"]*${ext}[^"]*">([\s\S]*?)</FilesMatch>`));
+  assert.ok(m, `deploy/apache.htaccess has no <FilesMatch> block for '${ext}'`);
+  return m[1];
+}
+
+const NO_CACHE = ['no-cache'];
+const IMMUTABLE = ['public, max-age=31536000, immutable'];
+
+test('_headers: html, js and css are no-cache; images and fonts are immutable', () => {
+  for (const path of ['/', '/index.html', '/assets/js/*', '/assets/css/*']) {
+    assert.deepEqual(headersRule(path), NO_CACHE, `_headers '${path}' must be exactly "Cache-Control: no-cache" (no hashed names, a timed cache mixes old and new modules)`);
+  }
+  for (const path of ['/assets/img/*', '/assets/fonts/*']) {
+    assert.deepEqual(headersRule(path), IMMUTABLE, `_headers '${path}' must be "Cache-Control: ${IMMUTABLE[0]}"`);
+  }
+});
+
+test('deploy/nginx.conf: html, js and css are no-cache; images and fonts are immutable', () => {
+  assert.deepEqual(cacheValues(nginxBlock('location /admission26/ {')), NO_CACHE, "deploy/nginx.conf 'location /admission26/' (html, js, css) must be exactly Cache-Control \"no-cache\"");
+  for (const header of ['location ^~ /admission26/assets/img/ {', 'location ^~ /admission26/assets/fonts/ {']) {
+    assert.deepEqual(cacheValues(nginxBlock(header)), IMMUTABLE, `deploy/nginx.conf '${header}' must be Cache-Control "${IMMUTABLE[0]}"`);
+  }
+});
+
+test('deploy/apache.htaccess: html, js and css are no-cache; images and fonts are immutable', () => {
+  assert.deepEqual(cacheValues(apacheBlock('html')), NO_CACHE, "deploy/apache.htaccess <FilesMatch> for html|js|css must be exactly Header set Cache-Control \"no-cache\"");
+  assert.deepEqual(cacheValues(apacheBlock('woff2')), IMMUTABLE, `deploy/apache.htaccess <FilesMatch> for images and fonts must be Cache-Control "${IMMUTABLE[0]}"`);
+  const htaccess = noComments(files['deploy/apache.htaccess']);
+  assert.ok(!/ExpiresDefault/.test(htaccess), 'deploy/apache.htaccess: remove ExpiresDefault, it would give html, js and css a timed Expires header');
+  assert.ok(/<FilesMatch "[^"]*html\|js\|css[^"]*">/.test(htaccess), 'deploy/apache.htaccess: the no-cache <FilesMatch> must cover html, js and css together');
+});
+
+test('no doc still says html, js and css are cached for 5 minutes', () => {
+  for (const p of ['README.md', 'HANDOFF.md', 'docs/SECURITY-EDGE.md', 'docs/RELEASE-CHECKLIST.md', 'docs/THREAT-MODEL.md']) {
+    assert.ok(!/5[- ]minute|max-age=300/i.test(read(p)), `${p} still mentions the old 5-minute cache; code, html and css are Cache-Control: no-cache now`);
+  }
+});

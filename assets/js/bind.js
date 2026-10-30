@@ -4,14 +4,13 @@ import { formatTaka, toBanglaDigits } from './format.js';
 import { getOffer } from './offer.js';
 
 /**
- * The Offer module's only DOM adapter. Writes every offer-related [data-bind] text
- * and [data-bind-label] screen-reader label from getOffer(), and sets or removes
- * `offer-ended` on <html> to match the offer status. Call again to refresh
- * (main.js does when the countdown reaches zero). The HTML keeps defaults for when script is off.
- * @param {number} now epoch milliseconds (Date.now() in the page)
+ * The one table of [data-bind] text keys and [data-bind-label] aria-label keys, built from an Offer.
+ * Pure. tests/contract.test.js reads it to check every key used in index.html is known here,
+ * and every key here is used in index.html.
+ * @param {ReturnType<typeof getOffer>} offer result of getOffer()
+ * @returns {{ texts: Record<string, string>, ariaLabels: Record<string, string> }}
  */
-export function bindOffer(now) {
-  const offer = getOffer(OFFER, now);
+export function bindTables(offer) {
   const { labels } = offer;
   const texts = {
     coupon: offer.couponCode,
@@ -29,6 +28,19 @@ export function bindOffer(now) {
     'copy-coupon': labels.copyCouponAria,
     'coupon-field': labels.couponFieldAria,
   };
+  return { texts, ariaLabels };
+}
+
+/**
+ * The Offer module's only DOM adapter. Writes every offer-related [data-bind] text
+ * and [data-bind-label] screen-reader label from getOffer(), and sets or removes
+ * `offer-ended` on <html> to match the offer status. Call again to refresh
+ * (main.js does when the countdown reaches zero). The HTML keeps defaults for when script is off.
+ * @param {number} now epoch milliseconds (Date.now() in the page)
+ */
+export function bindOffer(now) {
+  const offer = getOffer(OFFER, now);
+  const { texts, ariaLabels } = bindTables(offer);
 
   document.documentElement.classList.toggle('offer-ended', offer.status === 'ended');
 

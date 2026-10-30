@@ -28,7 +28,7 @@ DirectoryIndex index.html
 
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresDefault "access plus 5 minutes"
+  # No ExpiresDefault: html, js and css are set to no-cache below (revalidate every time).
   ExpiresByType image/webp "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/jpeg "access plus 1 year"
@@ -37,7 +37,7 @@ DirectoryIndex index.html
 </IfModule>
 <IfModule mod_headers.c>
   <FilesMatch "\.(html|js|css)$">
-    Header set Cache-Control "public, max-age=300"
+    Header set Cache-Control "no-cache"
   </FilesMatch>
   <FilesMatch "\.(webp|png|jpe?g|svg|ico|woff2)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
