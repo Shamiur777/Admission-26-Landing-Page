@@ -46,7 +46,7 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 2. Run `node --test`.
 3. Serve locally with `python -m http.server 8080`.
 4. Before a release, follow `docs/RELEASE-CHECKLIST.md`.
-5. Open items: Pixel and GTM IDs, final URL path, privacy policy coverage of the Pixel, `noindex` on the preview host, header application by the developer, CSP `base-uri` mismatch between the meta tag and the header copies.
+5. Open items: Pixel and GTM IDs, final URL path, privacy policy coverage of the Pixel, `noindex` on the preview host, header application by the developer.
 
 ## Log
 
