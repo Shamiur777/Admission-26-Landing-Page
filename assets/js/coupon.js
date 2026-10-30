@@ -1,5 +1,9 @@
-const COPIED_LABEL = 'কপি হয়েছে';
-const COPIED_MESSAGE = 'কোড কপি হয়েছে, চেকআউটে পেস্ট করো';
+/*
+ * Coupon copy: a pure core and a DOM adapter.
+ * Pure core (tests/coupon.test.js): copyFeedback. Text comes from offer.js `labels`.
+ * DOM adapter: initCoupon. The clipboard is injected as `copy`; copyText is the browser adapter.
+ */
+
 const RESET_MS = 2000;
 const STATUS_MS = 3000;
 const TOAST_MS = 15000;
@@ -20,6 +24,19 @@ function copyWithTextarea(text) {
   }
   area.remove();
   return ok;
+}
+
+/**
+ * What the page shows after a copy attempt. Pure.
+ * @param {{ copied: boolean, labels: { copied: string, copyFailed: string, copiedButton: string } }} input
+ *   labels come from getOffer().labels
+ * @returns {{ message: string, openToast: boolean, buttonLabel: string|null }}
+ *   buttonLabel is null when the button should keep its own label (nothing was copied)
+ */
+export function copyFeedback({ copied, labels }) {
+  return copied
+    ? { message: labels.copied, openToast: false, buttonLabel: labels.copiedButton }
+    : { message: labels.copyFailed, openToast: true, buttonLabel: null };
 }
 
 /**
@@ -60,7 +77,7 @@ function selectCodeOnPage(code) {
  * so the visitor can long-press to copy it.
  * @param {{ code: string, status: HTMLElement, toast: HTMLElement, onCopy?: () => void }} options
  */
-export function initCoupon({ code, status, toast, onCopy }) {
+export function initCoupon({ code, labels, status, toast, onCopy, copy = copyText }) {
   const input = toast.querySelector('input');
   const closeButton = toast.querySelector('button');
   let toastTimer = 0;
@@ -105,14 +122,13 @@ export function initCoupon({ code, status, toast, onCopy }) {
 
     button.addEventListener('click', async () => {
       selectCodeOnPage(code);
-      const copied = await copyText(code);
-      if (!copied) {
-        say(`কোডটি লিখে নাও: ${code}`);
+      const feedback = copyFeedback({ copied: await copy(code), labels });
+      say(feedback.message);
+      if (feedback.openToast) {
         openToast(button);
         return;
       }
-      say(COPIED_MESSAGE);
-      if (label) label.textContent = COPIED_LABEL;
+      if (label) label.textContent = feedback.buttonLabel;
       if (icon) icon.setAttribute('href', '#i-check');
       button.classList.add('is-copied');
       window.clearTimeout(timer);

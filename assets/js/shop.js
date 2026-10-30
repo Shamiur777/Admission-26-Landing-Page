@@ -10,7 +10,8 @@ import { toBanglaDigits } from './format.js';
  * Markup contract (index.html #shop):
  *   [role=tablist] > [data-tab="<name>"]       the tab buttons
  *   [data-panel="<name>"]                      the tab panel; holds [data-items] (the cards) and [data-status]
- *   [data-prompt]                              a link inside [data-items] that is not a card (it is never filtered or counted)
+ *   [data-prompt]                              a link inside [data-items] that is not a card; render.js places it, and the
+ *                                              one filter on `cards` below keeps it out of filtering and counting
  *   [data-chips="<name>"] > [data-filter]      the chip row for that tab ("all" or a category id)
  *   [data-status-template]                     status copy on [data-status], "{n}" is the Bangla-digit count
  *   [data-shop-anchor]                         first element under the sticky bar (deep links scroll to it)

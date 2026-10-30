@@ -20,7 +20,7 @@ GLOSSARY.md             the page's domain words (Offer, Coupon code, Offer deadl
 assets/js/catalog.js    every course, book and category
 assets/js/tracking.js   Meta Pixel / GTM loader, the table of event kinds (EVENTS), click events
 assets/js/cards.js      course, book and live cards: template contract, link, images, click tag
-assets/js/render.js     chips, hero fan, and the loops that skip any item with an unsafe link
+assets/js/render.js     chips, hero fan, the loops that skip any item with an unsafe link, and the in-list prompt position
 assets/js/links.js      buildLink(): pure link check + UTM pass-through
 assets/js/*.js          rendering, links, countdown, coupon copy, the shop tabs and chip filters (shop.js)
 tests/*.test.js        run: node --test
@@ -48,7 +48,7 @@ PRODUCT.md              design context for the page (not uploaded)
 
 ### Deadline in words, prompts and copy messages
 
-`offer.js` turns `endsAt` into a Bangla label in Bangladesh time (`deadlineLabel()`, exposed as `labels.deadline`), for example "৩ নভেম্বর, সন্ধ্যা ৭টা". It shows under the coupon slip and in the top bar, and follows `endsAt` with no other edit. Each list has a slim prompt after its sixth card ("QNA-র ১৮টি বইও আছে" in the courses list, "২৪টি কোর্সও আছে" in the books list). The prompts are `[data-prompt]` links in `index.html`; `main.js` moves them after the sixth card and `shop.js` does not count them as cards. After a coupon copy tap the page shows a message for 3 seconds ("কোড কপি হয়েছে, চেকআউটে পেস্ট করো", or "কোডটি লিখে নাও: REVENGE" if the browser blocks the clipboard) and selects the code text so a long-press can copy it.
+`offer.js` turns `endsAt` into a Bangla label in Bangladesh time (`deadlineLabel()`, exposed as `labels.deadline`), for example "৩ নভেম্বর, সন্ধ্যা ৭টা". It shows under the coupon slip and in the top bar, and follows `endsAt` with no other edit. Each list has a slim prompt after its sixth card ("QNA-র ১৮টি বইও আছে" in the courses list, "২৪টি কোর্সও আছে" in the books list). The prompts are `[data-prompt]` links in `index.html`; `render.js` places them after the sixth card (`promptIndex()` decides the position, tested in `tests/render.test.js`) and `shop.js` does not count them as cards. After a coupon copy tap the page shows a message for 3 seconds (`labels.copied`, or `labels.copyFailed` with the code if the browser blocks the clipboard; both live in `offer.js`, and `copyFeedback()` in `coupon.js` picks between them, tested in `tests/coupon.test.js`) and selects the code text so a long-press can copy it.
 
 ### Font and colours
 

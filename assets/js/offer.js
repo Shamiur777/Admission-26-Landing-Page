@@ -151,6 +151,12 @@ export function getOffer(offerConfig, now) {
       deadline: deadlineLabel(endsAt),
       copyCouponAria: `কুপন ${couponCode} কপি করো`,
       couponFieldAria: `কুপন কোড ${couponCode}`,
+      /** Status message after a successful coupon copy. */
+      copied: 'কোড কপি হয়েছে, চেকআউটে পেস্ট করো',
+      /** Status message when the browser blocks the clipboard; the visitor copies the code by hand. */
+      copyFailed: `কোডটি লিখে নাও: ${couponCode}`,
+      /** Short label a copy button shows for a moment after a successful copy. */
+      copiedButton: 'কপি হয়েছে',
     },
   };
 }

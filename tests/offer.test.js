@@ -119,3 +119,10 @@ test('deadline label is empty for an unreadable date', () => {
   assert.equal(deadlineLabel('soon'), '');
   assert.equal(getOffer({ ...config, endsAt: 'soon' }, 0).labels.deadline, '');
 });
+
+test('labels: coupon copy messages carry the code', () => {
+  const { labels } = getOffer(config, END - 1);
+  assert.equal(labels.copied, 'কোড কপি হয়েছে, চেকআউটে পেস্ট করো');
+  assert.equal(labels.copyFailed, 'কোডটি লিখে নাও: TESTCODE');
+  assert.equal(labels.copiedButton, 'কপি হয়েছে');
+});

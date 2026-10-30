@@ -1,4 +1,5 @@
 import { OFFER } from './config.js';
+import { getOffer } from './offer.js';
 import { COURSE_CATEGORIES, COURSES, BOOK_CATEGORIES, BOOKS, LIVE_CHANNELS, FEATURED } from './catalog.js';
 import { initTracking, initClickTracking, track } from './tracking.js';
 import { bindOffer } from './bind.js';
@@ -10,20 +11,10 @@ import { initStickyBar } from './stickybar.js';
 
 const $ = (selector) => document.querySelector(selector);
 const EAGER_IMAGES = 2;
-const PROMPT_AFTER = 6;
 
 /** Items of `list` whose ids are named in `ids`, in the order of `ids`. */
 function pick(list, ids) {
   return ids.map((id) => list.find((item) => item.id === id)).filter(Boolean);
-}
-
-/** Moves a list's [data-prompt] link to just after the sixth card (or the last card, if fewer). */
-function placePrompts(list) {
-  const prompt = list.querySelector('[data-prompt]');
-  if (!prompt) return;
-  const cards = Array.from(list.children).filter((el) => el !== prompt);
-  const anchor = cards[Math.min(PROMPT_AFTER, cards.length) - 1];
-  if (anchor) anchor.after(prompt);
 }
 
 function start() {
@@ -44,13 +35,11 @@ function start() {
   renderLive($('#live-list'), $('#tpl-live'), LIVE_CHANNELS);
   document.querySelectorAll('.grid, .live-grid').forEach((el) => el.setAttribute('data-ready', ''));
 
-  placePrompts($('#course-grid'));
-  placePrompts($('#book-grid'));
-
   initShop({ shop: $('#shop'), offerBar: $('#offer-bar') });
 
   initCoupon({
     code: OFFER.couponCode,
+    labels: getOffer(OFFER, Date.now()).labels,
     status: $('#copy-status'),
     toast: $('#copy-toast'),
     onCopy: () => track('couponCopy', { code: OFFER.couponCode }),

@@ -3,8 +3,35 @@ import { buildLink } from './links.js';
 import { getOffer } from './offer.js';
 import { courseCard, bookCard, liveCard, courseImage, bookImage, cloneTemplate } from './cards.js';
 
+const PROMPT_AFTER = 6;
+
 /**
- * Appends a card per item. An item whose link fails buildLink() is skipped with a console warning.
+ * Where a list's in-list prompt ("QNA-র ১৮টি বইও আছে") goes: the number of cards before it.
+ * After the sixth card, or after the last card when there are fewer. Pure.
+ * @param {number} cardCount cards in the list, not counting the prompt
+ * @param {number} [after] cards to show before the prompt
+ * @returns {number} 0 means the prompt comes first
+ */
+export function promptIndex(cardCount, after = PROMPT_AFTER) {
+  return Math.max(0, Math.min(after, cardCount));
+}
+
+/**
+ * Moves the list's [data-prompt] link (if it has one) to its place among the cards.
+ * The prompt is not a card: it is never filtered or counted (see shop.js).
+ * @param {HTMLElement} list
+ */
+function placePrompt(list) {
+  const prompt = list.querySelector('[data-prompt]');
+  if (!prompt) return;
+  const cards = Array.from(list.children).filter((el) => el !== prompt);
+  const index = promptIndex(cards.length);
+  if (index === 0) list.prepend(prompt);
+  else cards[index - 1].after(prompt);
+}
+
+/**
+ * Appends a card per item, then places the list's prompt. An item whose link fails buildLink() is skipped with a console warning.
  * @param {HTMLElement} list
  * @param {object[]} items
  * @param {(item: object, ctx: {href: string, eager: boolean}) => Element} make a card function from cards.js
@@ -21,6 +48,7 @@ function appendCards(list, items, make, eager = 0) {
     list.appendChild(make(item, { href: link.href, eager: index < eager }));
     index += 1;
   });
+  placePrompt(list);
 }
 
 /**
