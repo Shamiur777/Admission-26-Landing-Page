@@ -52,7 +52,7 @@ PRODUCT.md              design context for the page (not uploaded)
 
 The whole page is set in one family, Kona (the QNA Font), regular and bold, from `assets/fonts/kona-regular.woff2` and `kona-bold.woff2`. They are subsets with Bengali, Latin and punctuation. The fallback stack is Kalpurush, then Noto Sans Bengali. Kona has no check mark, so "কপি হয়েছে" shows a drawn tick icon (`#i-check` in the sprite). Do not type "✓" in the copy: it would fall back to another font.
 
-Kona is licensed under the SIL Open Font License 1.1. `assets/fonts/Kona-OFL.txt` is that licence and must be uploaded with the font files (`validate.mjs` and `stage.mjs` allow exactly that one `.txt`). Kona descends from Kalpurush (OmicronLab) for Bengali and Liberation Serif for Latin; the licence file names both. The footer says the page is set in the QNA Font.
+Kona is licensed under the SIL Open Font License 1.1. `assets/fonts/Kona-OFL.txt` is that licence and must be uploaded with the font files (`validate.mjs` and `stage.mjs` allow exactly that one `.txt`). Kona descends from Kalpurush (OmicronLab) for Bengali and Liberation Serif for Latin; the licence file names both. The footer names it only as "QNA Font"; never show "Kona" to visitors.
 
 Colours are CSS custom properties in `assets/css/tokens.css`: near-black ink, warm paper, white cards and one accent, saffron. Saffron is only a fill, a mark or an underline, never text on a light background.
 
