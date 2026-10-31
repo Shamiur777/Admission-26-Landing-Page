@@ -154,3 +154,14 @@ test('no doc still says html, js and css are cached for 5 minutes', () => {
     assert.ok(!/5[- ]minute|max-age=300/i.test(read(p)), `${p} still mentions the old 5-minute cache; code, html and css are Cache-Control: no-cache now`);
   }
 });
+
+test('Cloudflare build prefixes every _headers path with /admission26 and keeps the CSP', async () => {
+  const { prefixHeaders } = await import('../scripts/stage-cloudflare.mjs');
+  const source = readFileSync(new URL('../_headers', import.meta.url), 'utf8');
+  const out = prefixHeaders(source);
+  const paths = out.split('\n').filter((l) => /^\S/.test(l) && !l.startsWith('#'));
+  assert.ok(paths.length > 0, 'prefixed _headers has no path rules');
+  for (const p of paths) assert.ok(p.startsWith('/admission26/'), `path rule '${p}' is not under /admission26/`);
+  const csp = (t) => t.match(/Content-Security-Policy: (.*)/)[1];
+  assert.equal(csp(out), csp(source), 'the Cloudflare build changed the CSP');
+});

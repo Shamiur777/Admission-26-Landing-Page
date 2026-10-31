@@ -184,7 +184,16 @@ Add the script host to `script-src` and, usually, its collection endpoints to `c
 
 ## Deploy
 
-The page is a folder of static files. Put it at `https://edgecoursebd.com/admission26/`.
+The page is live at `https://hulkenstein.com/admission26/`, served by a Cloudflare Worker (static assets only) on the hulkenstein.com zone. To update it:
+
+1. `node --test` passes.
+2. `node scripts/stage-cloudflare.mjs` builds `dist-cloudflare/`: the staged files under `admission26/`, plus `_headers` with every path prefixed by `/admission26`.
+3. `npx wrangler deploy --config deploy/cloudflare/wrangler.jsonc --env-file .env.cloudflare` uploads it. On Windows PowerShell use `npx.cmd`. `.env.cloudflare` holds one line, `CLOUDFLARE_API_TOKEN=...`, a token made from the "Edit Cloudflare Workers" template and limited to the hulkenstein.com zone. It is git-ignored. Never commit or print it.
+4. `node scripts/probe.mjs https://hulkenstein.com/admission26/` passes.
+
+The Worker answers only `hulkenstein.com/admission26*`. Every other hulkenstein.com path still redirects to edgecoursebd.com as before.
+
+To host it on another server instead (for example `https://edgecoursebd.com/admission26/`), change `canonical`, `og:url`, `og:image` and `twitter:image` in `index.html` to the new address, then:
 
 - Upload exactly `index.html` and `assets/` to `admission26/` under the web root. Everything else stays in the repo. On Laravel that is `public/admission26/`. Real files are served directly, so the page never touches PHP, sessions or the database.
 - Apply the headers. Use whichever matches the server:

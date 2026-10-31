@@ -1,0 +1,19 @@
+// Cloudflare Worker (static assets only) that serves the page at https://hulkenstein.com/admission26/.
+// Build first: node scripts/stage-cloudflare.mjs
+// Deploy:      npx wrangler deploy --config deploy/cloudflare/wrangler.jsonc
+// The zone's redirect rule (hulkenstein.com -> edgecoursebd.com) must skip /admission26, or
+// visitors are redirected before the Worker runs. See README, "Deploy".
+{
+  "name": "admission26",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "../../dist-cloudflare",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  },
+  "routes": [
+    { "pattern": "hulkenstein.com/admission26*", "zone_name": "hulkenstein.com" }
+  ],
+  "workers_dev": false,
+  "preview_urls": false
+}

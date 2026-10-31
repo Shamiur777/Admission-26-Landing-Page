@@ -2,7 +2,7 @@
 
 ## What this is
 
-The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publication books. Static HTML, CSS and ES modules. It is the destination for boosted Facebook ads. The owner's developer will upload it as a subfolder of the main site (likely https://edgecoursebd.com/admission26/). A temporary preview runs at https://admission26-preview.vercel.app.
+The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publication books. Static HTML, CSS and ES modules. It is the destination for boosted Facebook ads. It is live at https://hulkenstein.com/admission26/ (Cloudflare Worker, static assets, owner's account). A preview also runs at https://admission26-preview.vercel.app.
 
 ## Status (2026-10-31)
 
@@ -10,8 +10,8 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - The offer runs until 2026-11-03 19:00 +06:00.
 - Meta Pixel ID and GTM ID are not set yet. Tracking is off until the owner supplies them.
 - Playbook alignment is done for everything that applies to a static page: docs, headers, CSP guard test, validator, allowlist staging (`dist/`), live probe script, CI, and one audit loop (see the log).
-- The final URL path on the main domain is not confirmed.
-- All work is committed and pushed. 103 tests pass (`node --test`).
+- Live at https://hulkenstein.com/admission26/. The official address (canonical, og:url) is that URL; the owner may move it to edgecoursebd.com later.
+- All work is committed and pushed. 104 tests pass (`node --test`).
 - Confirmed by the owner (2026-10-31): REVENGE gives the book discount on Rokomari.
 
 ## Decisions made
@@ -46,7 +46,7 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 2. Run `node --test`.
 3. Serve locally with `python -m http.server 8080`.
 4. Before a release, follow `docs/RELEASE-CHECKLIST.md`.
-5. Open items: Pixel and GTM IDs, final URL path, privacy policy coverage of the Pixel, `noindex` on the preview host, header application by the developer.
+5. Open items: Pixel and GTM IDs, privacy policy coverage of the Pixel, `noindex` on the preview host, header application by the developer.
 
 ## Log
 
@@ -80,6 +80,9 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - Accent colour changed from saffron to Hulkenstein green #01AD01 (sampled from the logo) at the owner's request. Tokens are `--color-green*`. Ink text on green is 6.28:1. Green is never used as text on a light background. Share image redrawn. Browser-tab icon is the Hulkenstein arms-and-brain mark.
 - Focused security review of 65f3099..HEAD (differential-review, sharp-edges, fp-check, manual secrets sweep of tracked files plus a git-history pattern scan): 5 candidates, all false positive. No innerHTML or other HTML sinks; CSP identical in 4 places; new static outbound links are constant https with noopener noreferrer; the staged folder holds only allowed files. Added a test pinning `ALLOWED_FILES` to the font licence. Not run: the ghost-scan-secrets binary (manual sweep instead).
 - Change safety: `tests/contract.test.js` checks every link between files (JS selectors to HTML, templates to cards.js, data-bind keys, CSS variables, catalog, config, outbound links, data- hooks). html, js and css are now `Cache-Control: no-cache`, so a returning visitor never mixes old and new modules after a deploy. README has a "Safe to change / change with care" table. 103 tests.
+- Eligibility Calculator card at the top of the shop (owner request): links https://edgecoursebd.com/eligibility-calculator, says it is free and uses SSC and HSC results (wording checked against the calculator page).
+- Hosted on hulkenstein.com/admission26 (owner request). Cloudflare Worker `admission26` (static assets, route `hulkenstein.com/admission26*`), deployed with a zone-scoped API token in git-ignored `.env.cloudflare`. Built by `scripts/stage-cloudflare.mjs` (prefixed `_headers`, tested). The zone's redirect to edgecoursebd.com did not need changing: other paths still redirect. Live probe 18/18. canonical, og:url and og images now point to hulkenstein.com. Seen in the browser: the zone injects the Cloudflare Web Analytics beacon, which the CSP blocks (harmless console error). Owner to choose: turn off Web Analytics auto-injection for the zone, or allow `static.cloudflareinsights.com` in the CSP.
+- Captcha declined on purpose: the page has no form, login or payment, and a challenge would cost ad clicks from Facebook's in-app browser. Bot control belongs at the edge (`docs/SECURITY-EDGE.md`).
 
 ## Playbook section 16 checklist (static page)
 
