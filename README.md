@@ -184,7 +184,7 @@ Add the script host to `script-src` and, usually, its collection endpoints to `c
 
 ## Deploy
 
-**Two addresses.** The official address is `https://edgecoursebd.com/admission26/`, once the edgecoursebd.com developers publish it. Until then the page runs at the backup address `https://hulkenstein.com/admission26/`, and ads and posts use that. While the backup is the only live copy, `canonical`, `og:url`, `og:image` and `twitter:image` in `index.html` point to it. Facebook builds its link preview from `og:url`, so pointing it at a page that does not exist yet would break the preview.
+**Two addresses.** The official address is `https://edgecoursebd.com/admission26/`. Ads run only there, once the edgecoursebd.com developers publish it. `index.html` names it in `canonical`, `og:url`, `og:image` and `twitter:image`, so the files the developer uploads are already right. Until launch, the backup `https://hulkenstein.com/admission26/` is the link sent in SMS to students. `scripts/stage-cloudflare.mjs` changes only the backup's share image to its own address, so link previews have a picture before the official page exists. `tests/headers.test.js` checks both.
 
 The backup is served by a Cloudflare Worker (static assets only) on the hulkenstein.com zone. To update it:
 
@@ -197,10 +197,9 @@ The Worker answers only `hulkenstein.com/admission26*`. Every other hulkenstein.
 
 ### Launch day: moving to edgecoursebd.com/admission26/
 
-1. In `index.html`, replace `https://hulkenstein.com/admission26/` with `https://edgecoursebd.com/admission26/` (four places: `canonical`, `og:url`, `og:image`, `twitter:image`). Run `node --test`, commit and push.
-2. The developer uploads the page to edgecoursebd.com as described below and runs `node scripts/probe.mjs https://edgecoursebd.com/admission26/`.
-3. Turn the backup into a forward, so old ad links and shares still land on the right page: `node scripts/stage-cloudflare.mjs --redirect`, then the same `wrangler deploy` command as above. Every `hulkenstein.com/admission26...` link now gets a 301 to the same path on edgecoursebd.com. Check one with `?utm_source=test#books` and confirm the parameters arrive.
-4. Point new ads at edgecoursebd.com. Re-scrape the URL in Meta's Sharing Debugger so Facebook picks up the new preview.
+1. The developer uploads the page to edgecoursebd.com as described below and runs `node scripts/probe.mjs https://edgecoursebd.com/admission26/`.
+2. When the owner says so, turn the backup into a forward, so links already sent by SMS land on the official page: `node scripts/stage-cloudflare.mjs --redirect`, then the same `wrangler deploy` command as above. Every `hulkenstein.com/admission26...` link now gets a 301 to the same path on edgecoursebd.com. Check one with `?utm_source=test#books` and confirm the parameters arrive.
+3. Start the ads on `https://edgecoursebd.com/admission26/`. Check it once in Meta's Sharing Debugger so Facebook has the preview.
 
 ### Uploading to edgecoursebd.com (or any other server)
 

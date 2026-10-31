@@ -171,3 +171,16 @@ test('launch-day redirect sends every /admission26 link to the official edgecour
   assert.equal(OFFICIAL_URL, 'https://edgecoursebd.com/admission26/');
   assert.equal(redirectRules(), '/admission26 https://edgecoursebd.com/admission26/ 301\n/admission26/* https://edgecoursebd.com/admission26/:splat 301\n');
 });
+
+test('index.html names edgecoursebd.com as the official address; the backup build only swaps the share image', async () => {
+  const { backupHtml } = await import('../scripts/stage-cloudflare.mjs');
+  const html = read('index.html');
+  const official = 'https://edgecoursebd.com/admission26/';
+  assert.match(html, new RegExp(`<link rel="canonical" href="${official}">`), 'canonical must be the official edgecoursebd.com address');
+  assert.match(html, new RegExp(`<meta property="og:url" content="${official}">`), 'og:url must be the official edgecoursebd.com address');
+  assert.doesNotMatch(html, /hulkenstein\.com\/admission26/, 'index.html must not name the backup address; stage-cloudflare.mjs adds it');
+  const backup = backupHtml(html);
+  assert.match(backup, /<link rel="canonical" href="https:\/\/edgecoursebd\.com\/admission26\/">/);
+  assert.match(backup, /og:image" content="https:\/\/hulkenstein\.com\/admission26\/assets\/img\/og-cover\.jpg"/);
+  assert.match(backup, /twitter:image" content="https:\/\/hulkenstein\.com\/admission26\/assets\/img\/og-cover\.jpg"/);
+});

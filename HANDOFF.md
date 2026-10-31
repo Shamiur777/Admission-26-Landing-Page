@@ -10,7 +10,8 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - The offer runs until 2026-11-03 19:00 +06:00.
 - Meta Pixel ID and GTM ID are not set yet. Tracking is off until the owner supplies them.
 - Playbook alignment is done for everything that applies to a static page: docs, headers, CSP guard test, validator, allowlist staging (`dist/`), live probe script, CI, and one audit loop (see the log).
-- Official address: https://edgecoursebd.com/admission26/, not public yet (edgecoursebd.com developers). Backup, live now: https://hulkenstein.com/admission26/. canonical and og:url point to the backup until the official page is public, then switch (README, "Launch day"). After launch the backup becomes a 301 forward (`node scripts/stage-cloudflare.mjs --redirect`) and is no longer used for ads.
+- Official address: https://edgecoursebd.com/admission26/, not public yet (edgecoursebd.com developers). Ads run only there. index.html already names it (canonical, og:url, og images).
+- Backup, live now: https://hulkenstein.com/admission26/, the link in SMS to students until launch. Its build swaps only the share image to itself. When the owner says so, it becomes a 301 forward to the official page (`node scripts/stage-cloudflare.mjs --redirect`, README "Launch day").
 - All work is committed and pushed. 104 tests pass (`node --test`).
 - Confirmed by the owner (2026-10-31): REVENGE gives the book discount on Rokomari.
 

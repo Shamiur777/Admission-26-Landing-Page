@@ -9,6 +9,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 export const PREFIX = '/admission26';
+export const OFFICIAL_URL = 'https://edgecoursebd.com/admission26/';
 
 /** Prefixes each path rule in a _headers file. Comments, header lines and host rules stay as they are. */
 export function prefixHeaders(text, prefix = PREFIX) {
@@ -19,8 +20,16 @@ export function prefixHeaders(text, prefix = PREFIX) {
     .join('\n');
 }
 
+/**
+ * The backup copy keeps canonical and og:url on the official address, but its share image points
+ * to itself: the official page may not be public yet, and SMS or chat apps need a working image.
+ */
+export const BACKUP_URL = 'https://hulkenstein.com/admission26/';
+export function backupHtml(html, official = OFFICIAL_URL, backup = BACKUP_URL) {
+  return html.replaceAll(`${official}assets/img/`, `${backup}assets/img/`);
+}
+
 /** Launch day: the backup copy forwards every old link (path, query and #tab kept) to the official URL. */
-export const OFFICIAL_URL = 'https://edgecoursebd.com/admission26/';
 export function redirectRules(prefix = PREFIX, target = OFFICIAL_URL) {
   return `${prefix} ${target} 301\n${prefix}/* ${target}:splat 301\n`;
 }
@@ -39,6 +48,8 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   rmSync(OUT, { recursive: true, force: true });
   mkdirSync(OUT, { recursive: true });
   cpSync(join(ROOT, 'dist'), join(OUT, PREFIX.slice(1)), { recursive: true });
+  const page = join(OUT, PREFIX.slice(1), 'index.html');
+  writeFileSync(page, backupHtml(readFileSync(page, 'utf8')));
   writeFileSync(join(OUT, '_headers'), prefixHeaders(readFileSync(join(ROOT, '_headers'), 'utf8')));
   console.log(`Staged dist-cloudflare/ for https://hulkenstein.com${PREFIX}/`);
 }
