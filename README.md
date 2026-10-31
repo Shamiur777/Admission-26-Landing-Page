@@ -184,7 +184,9 @@ Add the script host to `script-src` and, usually, its collection endpoints to `c
 
 ## Deploy
 
-The page is live at `https://hulkenstein.com/admission26/`, served by a Cloudflare Worker (static assets only) on the hulkenstein.com zone. To update it:
+**Two addresses.** The official address is `https://edgecoursebd.com/admission26/`, once the edgecoursebd.com developers publish it. Until then the page runs at the backup address `https://hulkenstein.com/admission26/`, and ads and posts use that. While the backup is the only live copy, `canonical`, `og:url`, `og:image` and `twitter:image` in `index.html` point to it. Facebook builds its link preview from `og:url`, so pointing it at a page that does not exist yet would break the preview.
+
+The backup is served by a Cloudflare Worker (static assets only) on the hulkenstein.com zone. To update it:
 
 1. `node --test` passes.
 2. `node scripts/stage-cloudflare.mjs` builds `dist-cloudflare/`: the staged files under `admission26/`, plus `_headers` with every path prefixed by `/admission26`.
@@ -193,7 +195,14 @@ The page is live at `https://hulkenstein.com/admission26/`, served by a Cloudfla
 
 The Worker answers only `hulkenstein.com/admission26*`. Every other hulkenstein.com path still redirects to edgecoursebd.com as before.
 
-To host it on another server instead (for example `https://edgecoursebd.com/admission26/`), change `canonical`, `og:url`, `og:image` and `twitter:image` in `index.html` to the new address, then:
+### Launch day: moving to edgecoursebd.com/admission26/
+
+1. In `index.html`, replace `https://hulkenstein.com/admission26/` with `https://edgecoursebd.com/admission26/` (four places: `canonical`, `og:url`, `og:image`, `twitter:image`). Run `node --test`, commit and push.
+2. The developer uploads the page to edgecoursebd.com as described below and runs `node scripts/probe.mjs https://edgecoursebd.com/admission26/`.
+3. Turn the backup into a forward, so old ad links and shares still land on the right page: `node scripts/stage-cloudflare.mjs --redirect`, then the same `wrangler deploy` command as above. Every `hulkenstein.com/admission26...` link now gets a 301 to the same path on edgecoursebd.com. Check one with `?utm_source=test#books` and confirm the parameters arrive.
+4. Point new ads at edgecoursebd.com. Re-scrape the URL in Meta's Sharing Debugger so Facebook picks up the new preview.
+
+### Uploading to edgecoursebd.com (or any other server)
 
 - Upload exactly `index.html` and `assets/` to `admission26/` under the web root. Everything else stays in the repo. On Laravel that is `public/admission26/`. Real files are served directly, so the page never touches PHP, sessions or the database.
 - Apply the headers. Use whichever matches the server:

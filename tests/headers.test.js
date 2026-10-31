@@ -165,3 +165,9 @@ test('Cloudflare build prefixes every _headers path with /admission26 and keeps 
   const csp = (t) => t.match(/Content-Security-Policy: (.*)/)[1];
   assert.equal(csp(out), csp(source), 'the Cloudflare build changed the CSP');
 });
+
+test('launch-day redirect sends every /admission26 link to the official edgecoursebd.com page', async () => {
+  const { redirectRules, OFFICIAL_URL } = await import('../scripts/stage-cloudflare.mjs');
+  assert.equal(OFFICIAL_URL, 'https://edgecoursebd.com/admission26/');
+  assert.equal(redirectRules(), '/admission26 https://edgecoursebd.com/admission26/ 301\n/admission26/* https://edgecoursebd.com/admission26/:splat 301\n');
+});
