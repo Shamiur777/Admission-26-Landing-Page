@@ -12,7 +12,7 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - Playbook alignment is done for everything that applies to a static page: docs, headers, CSP guard test, validator, allowlist staging (`dist/`), live probe script, CI, and one audit loop (see the log).
 - Official address: https://edgecoursebd.com/admission26/, not public yet (edgecoursebd.com developers). Ads run only there. index.html already names it (canonical, og:url, og images).
 - Backup, live now: https://hulkenstein.com/admission26/, the link in SMS to students until launch. Its build swaps only the share image to itself. When the owner says so, it becomes a 301 forward to the official page (`node scripts/stage-cloudflare.mjs --redirect`, README "Launch day").
-- All work is committed and pushed. 104 tests pass (`node --test`).
+- All work is committed and pushed. 106 tests pass (`node --test`).
 - Confirmed by the owner (2026-10-31): REVENGE gives the book discount on Rokomari.
 
 ## Decisions made
@@ -83,6 +83,7 @@ The Admission 26 landing page for Edge Course / Hulkenstein courses and QNA Publ
 - Change safety: `tests/contract.test.js` checks every link between files (JS selectors to HTML, templates to cards.js, data-bind keys, CSS variables, catalog, config, outbound links, data- hooks). html, js and css are now `Cache-Control: no-cache`, so a returning visitor never mixes old and new modules after a deploy. README has a "Safe to change / change with care" table. 103 tests.
 - Eligibility Calculator card at the top of the shop (owner request): links https://edgecoursebd.com/eligibility-calculator, says it is free and uses SSC and HSC results (wording checked against the calculator page).
 - Hosted on hulkenstein.com/admission26 (owner request). Cloudflare Worker `admission26` (static assets, route `hulkenstein.com/admission26*`), deployed with a zone-scoped API token in git-ignored `.env.cloudflare`. Built by `scripts/stage-cloudflare.mjs` (prefixed `_headers`, tested). The zone's redirect to edgecoursebd.com did not need changing: other paths still redirect. Live probe 18/18. canonical, og:url and og images now point to hulkenstein.com. Seen in the browser: the zone injects the Cloudflare Web Analytics beacon, which the CSP blocks (harmless console error). Owner to choose: turn off Web Analytics auto-injection for the zone, or allow `static.cloudflareinsights.com` in the CSP.
+- The five main complete courses (Varsity A, B, C, Medical, Engineering: edgecoursebd.com/courses/580, 576, 577, 579, 578, ৳3500 each on the course pages) and their five analysis megabooks (Rokomari 568057, 568068, 568067, 568066, 568061) added at the top of each list, from the old edgecoursebd.com/admission26 page (owner request). Course names are the owner's. Banners from the owner's WhatsApp files; book covers from the owner's Drive (bundles drawn as a stack of the subject covers). New course category: মেডিকেল. Hero tiles now show these items. 29 courses, 23 books.
 - Captcha declined on purpose: the page has no form, login or payment, and a challenge would cost ad clicks from Facebook's in-app browser. Bot control belongs at the edge (`docs/SECURITY-EDGE.md`).
 
 ## Playbook section 16 checklist (static page)

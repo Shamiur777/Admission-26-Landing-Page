@@ -16,6 +16,7 @@
 
 export const COURSE_CATEGORIES = [
   { id: 'varsity', label: 'ভার্সিটি' },
+  { id: 'medical', label: 'মেডিকেল' },
   { id: 'engineering', label: 'ইঞ্জিনিয়ারিং' },
   { id: 'gst', label: 'GST ও কৃষি' },
   { id: 'nursing', label: 'নার্সিং' },
@@ -23,6 +24,47 @@ export const COURSE_CATEGORIES = [
 ];
 
 export const COURSES = [
+  // The five main complete courses come first (owner request, 2026-10-31).
+  {
+    id: 'varsity-a-complete',
+    title: 'HulkenStein Varsity A Unit Admission Course',
+    category: 'varsity',
+    url: 'https://edgecoursebd.com/courses/580',
+    price: 3500,
+    highlights: ['120+ ভার্সিটি ক অ্যাডমিশন স্ট্যান্ডার্ড Class', '৫০০+ টপিকভিত্তিক এক্সাম', 'ক ইউনিট অ্যানালাইসিস মেগাবুক (ই-বুক)'],
+  },
+  {
+    id: 'varsity-b-complete',
+    title: 'Varsity B Unit Complete Admission Course 2026',
+    category: 'varsity',
+    url: 'https://edgecoursebd.com/courses/576',
+    price: 3500,
+    highlights: ['১০০+ এডমিশন ক্লাস', '৪০+ একাডেমিক ক্লাস', 'B/D Unit Analysis Megabook (ই-বুক)'],
+  },
+  {
+    id: 'varsity-c-complete',
+    title: 'Varsity C UNIT Complete Admission Course 2026',
+    category: 'varsity',
+    url: 'https://edgecoursebd.com/courses/577',
+    price: 3500,
+    highlights: ['২০০+ রেকর্ড ক্লাস', '100+ Chapter Exams', 'DU C Unit Analysis MegaBook (E-book)'],
+  },
+  {
+    id: 'medical-complete',
+    title: 'Hulkenstein Medical Admission Complete Preparation Course',
+    category: 'medical',
+    url: 'https://edgecoursebd.com/courses/579',
+    price: 3500,
+    highlights: ['৮৫+ বিষয়ভিত্তিক ক্লাস', '৫০০+ টোটাল এক্সাম', 'QnA Analysis Megabook'],
+  },
+  {
+    id: 'engineering-complete',
+    title: 'HulkCore Engineering Admission-26 + Varsity Biology Course',
+    category: 'engineering',
+    url: 'https://edgecoursebd.com/courses/578',
+    price: 3500,
+    highlights: ['80+ Engineering Standard Class', '10+ Varsity Standard Biology Class', 'QNA Engineering Analysis Megabook (PDF)'],
+  },
   {
     id: 'du-a-unit-written',
     title: 'Varsity A Unit Written Special Course',
@@ -224,6 +266,12 @@ export const BOOK_CATEGORIES = [
 ];
 
 export const BOOKS = [
+  // The five main analysis megabooks come first (owner request, 2026-10-31).
+  { id: 'varsity-a-analysis', title: 'QNA Varsity ক ইউনিট Analysis Megabook Bundle', category: 'analysis', url: 'https://www.rokomari.com/book/568057' },
+  { id: 'varsity-b-analysis', title: 'QNA Varsity খ ইউনিট Analysis Megabook', category: 'analysis', url: 'https://www.rokomari.com/book/568068' },
+  { id: 'varsity-c-analysis', title: 'QNA Varsity গ ইউনিট Analysis Megabook', category: 'analysis', url: 'https://www.rokomari.com/book/568067' },
+  { id: 'medical-analysis', title: 'QNA Medical Analysis Megabook Bundle', category: 'analysis', url: 'https://www.rokomari.com/book/568066' },
+  { id: 'engineering-analysis', title: 'QNA Engineering Analysis Megabook Bundle', category: 'analysis', url: 'https://www.rokomari.com/book/568061' },
   { id: 'ju-ad-analysis', title: 'QNA JU A+D Unit Analysis Megabook', category: 'analysis', url: 'https://www.rokomari.com/book/571704' },
   { id: 'ru-c-analysis', title: 'QNA RU C Unit Analysis Megabook', category: 'analysis', url: 'https://www.rokomari.com/book/571706' },
   { id: 'cu-a-analysis', title: 'QNA CU A Unit Analysis Megabook', category: 'analysis', url: 'https://www.rokomari.com/book/571708' },
@@ -260,6 +308,6 @@ export const LIVE_CHANNELS = [
  * The middle one sits in front. Pick visually different, portrait-friendly covers.
  */
 export const FEATURED = {
-  courses: ['du-a-unit-written', 'sust-crash', 'mist-sprint'],
-  books: ['ru-c-analysis', 'ju-ad-analysis', 'cu-a-analysis'],
+  courses: ['medical-complete', 'varsity-a-complete', 'engineering-complete'],
+  books: ['varsity-b-analysis', 'varsity-a-analysis', 'varsity-c-analysis'],
 };
