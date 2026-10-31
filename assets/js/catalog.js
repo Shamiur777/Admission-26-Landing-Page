@@ -35,7 +35,7 @@ export const COURSES = [
   },
   {
     id: 'varsity-b-complete',
-    title: 'Varsity B Unit Complete Admission Course 2026',
+    title: 'Varsity B UNIT Complete Admission Course 2026',
     category: 'varsity',
     url: 'https://edgecoursebd.com/courses/576',
     price: 3500,
